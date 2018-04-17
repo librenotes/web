@@ -27,9 +27,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique=True, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
-    password = db.Column(db.Text, unique=True)
-    random_md5 = db.Column(db.Text, unique=True, nullable=False)
-    random_encrypted = db.Column(db.Text, unique=True, nullable=False)
+    password = db.Column(db.Text)
+    random_hashed = db.Column(db.Text, nullable=False)
+    random_encrypted = db.Column(db.Text, nullable=False)
     fk_notes = db.Column(db.Integer, db.ForeignKey(Note.id), nullable=True)
     notes = db.relationship(Note, backref='users')
 
