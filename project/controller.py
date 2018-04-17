@@ -1,8 +1,9 @@
-from project import app, render_template
+from project import app
+from flask import render_template
 
 @app.route("/")
 def index():
-    return "warm welcome"
+    return render_template("index.html.j2")
 
 @app.route("/login")
 def login():
