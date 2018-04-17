@@ -16,4 +16,5 @@ def notes(user):
 
 @app.route("/dbc")
 def createdb():
+    db.create_all()
     return "OK"
