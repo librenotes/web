@@ -1,4 +1,5 @@
-from project import app
+from project import app, db
+from .models import User, Note, Category
 from flask import render_template
 
 @app.route("/")
@@ -11,5 +12,8 @@ def login():
 
 @app.route("/notesof/<user>")
 def notes(user):
-    # find the user
     return render_template("notes.html.j2")
+
+@app.route("/dbc")
+def createdb():
+    return "OK"
