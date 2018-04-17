@@ -16,7 +16,6 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, default="Untitled")
     content = db.Column(db.Text, default="No content")
-    fk_category = db.Column(db.Integer, nullable=True)
     isprivate = db.Column(db.Boolean, unique=False, nullable=False, default=True)
     categories = db.relationship(
             'Category',

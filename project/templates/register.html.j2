@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html.j2" %}
+{% import "messageflash.html.j2" as messageflash %}
 
-</body>
-</html>
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+<form class="form-signin" method="post" action="{{url_for('register_post')}}">
+  <h1 class="h3 mb-3 font-weight-normal text-center">Register</h1>
+  {{messageflash.flash()}}
+   {{ form.csrf_token }}
+   <label for="inputUsername" class="sr-only">Username</label>
+   {{ form.name(class_="form-control", placeholder="username") }}
+   <label for="inputEmail" class="sr-only">Email</label>
+   {{ form.email(class_="form-control", placeholder="email@email.com") }}
+   <label for="inputPassword" class="sr-only">Password</label>
+   {{ form.pasword(class_="form-control", placeholder="password") }}
+   <label for="inputReassword" class="sr-only">Re-Password</label>
+   {{ form.re_password(class_="form-control", placeholder="password") }}
+   <button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
+</form>
+{% endblock %}

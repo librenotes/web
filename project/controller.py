@@ -27,7 +27,7 @@ def register_get():
 
 
 @cache.cached()
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET"])
 def login_get():
     form = LoginForm()
     return render_template("login.html.j2", form=form)
@@ -37,20 +37,20 @@ def login_get():
 def login_post():
     form = LoginForm(request.form)
     if form.validate():
-        user_ = User.query.filter_by(username=form.username).first()
-        if user_ and check_password_hash(user_.password, form.password):
+        user_ = User.query.filter_by(username=form.username.data).first()
+        if user_ and check_password_hash(user_.password, form.password.data):
             login_user(user_)
-            cipher = AES.new(form.password, AES.MODE_CBC)
+            cipher = AES.new(form.password.data, AES.MODE_CBC)
             rand_key = cipher.decrypt(user_.random_encrypted)
             session['rand_key'] = rand_key
             flash('Login Successful!', category='success')
-            return redirect(url_for(notes, user=form.username))
+            return redirect(url_for(notes, user=form.username.data))
         else:
             flash('Password or Username does not match', category='danger')
-            return redirect(url_for(login_get))
+            return redirect(url_for("login_get"))
     else:
         flash_errors(form)
-        return redirect(url_for(login_get))
+        return redirect(url_for("login_get"))
 
 
 @app.route("/signup", methods=["POST"])
@@ -69,4 +69,5 @@ def notes(user):
 
 @app.route("/dbc")
 def createdb():
+    db.create_all()
     return "OK"

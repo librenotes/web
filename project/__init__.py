@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config as conf
-from flask.ext.cache import Cache
+from flask_cache import Cache
 from flask_login import LoginManager
 
 
