@@ -1,4 +1,4 @@
-from project import app, cache, login_manager
+from project import app, cache, login_manager, db
 from flask import render_template, redirect, url_for, request, session, flash
 from flask_login import login_user, current_user, login_required, logout_user
 from .forms import RegisterForm, LoginForm
