@@ -32,7 +32,7 @@ def register_get():
 
 @app.route("/login", methods=["GET"])
 def login_get():
-    if current_user:
+    if current_user.is_authenticated:
         flash("You are already logged in", "success")
         return redirect(url_for('notes', username=current_user.username))
     else:
