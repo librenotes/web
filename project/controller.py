@@ -2,11 +2,10 @@ from project import app, cache, db, login_manager
 from flask import render_template, redirect, url_for, request, session, flash
 from flask_login import login_user, current_user, login_required, logout_user
 from .forms import RegisterForm, LoginForm
-from .models import User
+from .models import User, AESCipher
 from werkzeug.security import generate_password_hash, check_password_hash
 from Crypto.Cipher import AES
 from Crypto import Random
-
 
 @login_manager.user_loader
 def load_user(user_id):
