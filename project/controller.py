@@ -5,7 +5,6 @@ from .forms import RegisterForm, LoginForm, NoteForm
 from .models import User, Note
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter_by(id=user_id).first()

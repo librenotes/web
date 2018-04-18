@@ -1,5 +1,5 @@
 {% extends "base.html.j2" %}
-{% import "messageflash.html.j2" as messageflash %}
+{% import "macro.html.j2" as macro %}
 
 {% block styles %}
 {{ super() }}
@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="#exampleModal" data-toggle="modal"><span class="fas fa-2x fa-pencil-alt"></span></a>
+          <a href="#createModal" data-toggle="modal"><span class="fas fa-2x fa-pencil-alt"></span></a>
         </li>
 
       </ul>
@@ -29,7 +29,7 @@
 
 {% block content %}
 <div class="container" style="padding-top:50px">
-{{messageflash.flash()}}
+{{macro.flash()}}
   <div class="row">
     <div class="row filter">
         {% for note in notes %}
@@ -39,11 +39,12 @@
                   <span class="fas fa-2x fa-sticky-note"></span>
                 </div>
                 <div class="info">
-                    <h4 class="text-center">{{note.title|safe}}</h4>
-                    <p>{{note.content|safe}}</p>
-                    <ul>
-                      <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-edit"></span></a></li>
-                      <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-trash-alt"></a></span></li>
+                  <h4 class="text-center" id="t{{note.id}}">{{note.title|safe}}</h4>
+                  <p id="b{{note.id}}">{{note.content|safe}}</p>
+                  <ul>
+                    <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
+                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></a></span></li>
+
                     </ul>
                 </div>
             </div>
@@ -54,37 +55,36 @@
 
 </div>
 {% endblock %}
-{% block modal %}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Add new note</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Title:</label>
-        <input type="text" class="form-control" id="recipient-name">
-      </div>
-      <div class="form-group">
-        <label for="message-text" class="col-form-label">Note:</label>
-        <textarea class="form-control" id="message-text"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Labels:</label>
-        <input type="text" class="form-control" id="hashtag-name">
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save</button>
-  </div>
-</div>
-</div>
-</div>
+{% block createmodal %}
+  {{macro.createmodal()}}
+{% endblock %}
+{% block editmodel %}
+  {{macro.editmodal()}}
+{% endblock %}
+{% block deletemodal %}
+  {{macro.deletemodal()}}
+{% endblock %}
+{% block scripts %}
+  {{super()}}
+<script type="text/javascript">
+  $('#editModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var id = button.data('whatever')
+  var title = document.getElementById("t" + id).innerHTML;
+  var body = document.getElementById("b" + id).innerHTML;
+
+  var modal = $(this);
+  modal.find('#edit-title').val(title);
+  modal.find('#edit-note').val(body);
+});
+</script>
+<script type="text/javascript">
+  $('#deleteModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+  var id = button.data('whatever');
+  var modal = $(this);
+  console.log(id);
+  modal.find('#delete').val(id);
+});
+</script>
 {% endblock %}
