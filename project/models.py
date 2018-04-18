@@ -1,4 +1,8 @@
 from project import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from Crypto.Cipher import AES
+from Crypto import Random
+
 
 categories_notes = db.Table(
     'categories_notes',
@@ -33,6 +37,26 @@ class User(db.Model):
     fk_notes = db.Column(db.Integer, db.ForeignKey(Note.id), nullable=True)
     notes = db.relationship(Note, backref='users')
 
+    def get_random_key(self, plain_pass):
+        padded_plain, padded_hashed = self.get_padded_passwords(plain_pass)
+        cipher = AES.new(padded_plain, AES.MODE_CBC, padded_hashed)
+        rand_key = cipher.decrypt(self.random_encrypted)
+        return rand_key
+
+    def get_padded_passwords(self, plain_pass):
+        remainder = 16 - len(plain_pass) % 16
+        padded_plain = plain_pass + '0' * remainder
+        hashed_password = generate_password_hash(plain_pass)
+        padded_hashed = hashed_password[-16:]
+        return padded_plain, padded_hashed
+
+    def create_rand_key(self, plain_pass):
+        rand_key = Random.get_random_bytes(256)
+        padded_plain, padded_hashed = self.get_padded_passwords(plain_pass)
+        cipher = AES.new(padded_plain, AES.MODE_CBC, padded_hashed)
+        random_encrypted = cipher.encrypt(rand_key)
+        self.random_encrypted = random_encrypted
+        self.random_hashed = generate_password_hash(rand_key)
 
     def is_authenticated(self):
         return True
