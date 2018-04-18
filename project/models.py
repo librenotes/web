@@ -1,38 +1,44 @@
 from project import db
-
-categories_notes = db.Table(
-    'categories_notes',
-    db.Column('category_id', db.Integer(), db.ForeignKey('category.id')),
-    db.Column('note_id', db.Integer(), db.ForeignKey('note.id'))
-)
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, nullable=False, unique=True)
-
-
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, default="Untitled")
-    content = db.Column(db.Text, default="No content")
-    isprivate = db.Column(db.Boolean, unique=False, nullable=False, default=True)
-    categories = db.relationship(
-            'Category',
-            secondary=categories_notes,
-            backref=db.backref('notes', lazy='dynamic')
-        )
+from werkzeug.security import generate_password_hash, pbkdf2_bin
+from .aesCipher import AESCipher
+from os import urandom
 
 class User(db.Model):
+    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique=True, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
-    password = db.Column(db.Text, unique=True)
-    random_md5 = db.Column(db.Text, unique=True, nullable=False)
-    random_encrypted = db.Column(db.Text, unique=True, nullable=False)
-    fk_notes = db.Column(db.Integer, db.ForeignKey(Note.id), nullable=True)
-    notes = db.relationship(Note, backref='users')
+    salt = db.Column(db.Text, unique=True, nullable=False)
+    password = db.Column(db.Text)
+    random_hashed = db.Column(db.Text, nullable=False)
+    random_encrypted = db.Column(db.Text, nullable=False)
+    notes = db.relationship('Note')
 
+    def __init__(self): pass
+
+    def generate_encryption_keys(self, plain_pass):
+        self.__generate_salt()
+        self.__generate_random_key(plain_pass)
+
+    def __generate_salt(self):
+        self.salt = urandom(16)
+
+    def __get_hashed_pass(self, plain_pass):
+        return pbkdf2_bin(plain_pass, salt=self.salt, keylen=32)
+
+    def get_random_key(self, plain_pass):
+        hashed_pass = self.__get_hashed_pass(plain_pass)
+        cipher = AESCipher(hashed_pass)
+        rand_key = cipher.decrypt(self.random_encrypted)
+        return rand_key
+
+    def __generate_random_key(self, plain_pass):
+        rand_key = urandom(16)
+        hashed_pass = self.__get_hashed_pass(plain_pass)
+        cipher = AESCipher(hashed_pass)
+        random_encrypted = cipher.encrypt(rand_key)
+        self.random_encrypted = random_encrypted
+        self.random_hashed = generate_password_hash(rand_key)
 
     def is_authenticated(self):
         return True
@@ -48,3 +54,27 @@ class User(db.Model):
 
     def __str__(self):
         return self.username
+
+class Note(db.Model):
+    __tablename__ = "Note"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, default="Untitled")
+    content = db.Column(db.Text, default="No content")
+    isprivate = db.Column(db.Boolean, unique=False, nullable=False, default=True)
+    categories = db.Column(db.Text, unique=False, default="#nocategory")
+    user = db.relationship(User)
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+
+    def decrypt(self, rand_key):
+        cipher = AESCipher(rand_key)
+        if self.isprivate:
+            self.title = cipher.decrypt(self.title).decode("utf-8")
+            self.content = cipher.decrypt(self.content).decode("utf-8")
+            self.categories = cipher.decrypt(self.categories).decode("utf-8")
+
+    def encrypt(self, rand_key):
+        cipher = AESCipher(rand_key)
+        if self.isprivate:
+            self.title = cipher.encrypt(self.title)
+            self.content = cipher.encrypt(self.content)
+            self.categories = cipher.encrypt(self.categories)

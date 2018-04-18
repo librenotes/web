@@ -1,4 +1,6 @@
 {% extends "base.html.j2" %}
+{% import "messageflash.html.j2" as messageflash %}
+
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/notes.css') }}">
@@ -27,16 +29,18 @@
 
 {% block content %}
 <div class="container" style="padding-top:50px">
+{{messageflash.flash()}}
   <div class="row">
     <div class="row filter">
+        {% for note in notes %}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
             <div class="box">
                 <div class="box-icon">
                   <span class="fas fa-2x fa-sticky-note"></span>
                 </div>
                 <div class="info">
-                    <h4 class="text-center">Private Notes</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+                    <h4 class="text-center">{{note.title|safe}}</h4>
+                    <p>{{note.content|safe}}</p>
                     <ul>
                       <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-edit"></span></a></li>
                       <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-trash-alt"></a></span></li>
@@ -44,21 +48,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-            <div class="box">
-                <div class="box-icon">
-                  <span class="fas fa-2x fa-sticky-note"></span>
-                </div>
-                <div class="info">
-                    <h4 class="text-center">Private Notes</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
-                    <ul>
-                      <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-edit"></span></a></li>
-                      <li><a style="color:#343a40;" href="#"><span class="far fa-2x fa-trash-alt"></a></span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
+
 	</div>
 
 </div>

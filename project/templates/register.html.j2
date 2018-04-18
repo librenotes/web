@@ -12,11 +12,11 @@
   {{messageflash.flash()}}
    {{ form.csrf_token }}
    <label for="inputUsername" class="sr-only">Username</label>
-   {{ form.name(class_="form-control", placeholder="username") }}
+   {{ form.username(class_="form-control", placeholder="username") }}
    <label for="inputEmail" class="sr-only">Email</label>
    {{ form.email(class_="form-control", placeholder="email@email.com") }}
    <label for="inputPassword" class="sr-only">Password</label>
-   {{ form.pasword(class_="form-control", placeholder="password") }}
+   {{ form.password(class_="form-control", placeholder="password") }}
    <label for="inputReassword" class="sr-only">Re-Password</label>
    {{ form.re_password(class_="form-control", placeholder="password") }}
    <button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
