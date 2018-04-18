@@ -1,20 +1,21 @@
 from Crypto.Cipher import AES
 from Crypto import Random
 import base64
-# from werkzeug import
 
 BS = 16
-# pad = lambda s: "{}{}".format(s, (BS - len(s) % BS) * chr(BS - len(s) % BS))
 
 
 def pad(s):
+    if type(s) == str:
+        s = s.encode('utf-8')
     remainder = (BS - len(s) % BS)
-    padded_s = s + (chr(remainder)*remainder).encode('utf-8')
+    pad = (chr(remainder)*remainder).encode('utf-8')
+    padded_s = s + pad
     return padded_s
 
-
-unpad = lambda s: s[:-ord(s[len(s) - 1:])]
-
+def unpad(s):
+    s = s[:-ord(s[len(s) - 1:])]
+    return s
 
 class AESCipher:
 

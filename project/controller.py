@@ -83,13 +83,14 @@ def register_post():
 @app.route("/notes/<username>")
 def notes(username):
     user_ = current_user
-    notes_list = []
+    notes_list = Note.query.filter_by(user=user_, isprivate=True).all()
+    print(notes_list)
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
-        for note in Note.query.filter_by(Note.user.username=username).all():
+        for note in Note.query.filter_by(user=user_).all():
             note.decrypt(session.get("rand_key"))
             print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
     else:
-        for note in Note.query.filter_by(user.username=username, user.isprivate=False).all():
+        for note in Note.query.filter_by(user=user_, isprivate=False).all():
             print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
 
     return render_template("notes.html.j2")
@@ -99,6 +100,8 @@ def notes(username):
 @login_required
 def new():
     user_ = current_user
+    user_ = User.query.filter_by(id=user_.id).first()
+    print(user_.notes)
     if check_password_hash(user_.random_hashed, session.get("rand_key")):
         for i in range(10):
             note = Note()

@@ -3,31 +3,8 @@ from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .aesCipher import AESCipher
 from os import urandom
 
-
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, default="Untitled")
-    content = db.Column(db.Text, default="No content")
-    isprivate = db.Column(db.Boolean, unique=False, nullable=False, default=True)
-    categories = db.Column(db.Text, unique=False, default="#nocategory")
-    user = db.relationship("Note")
-
-    def decrypt(self, rand_key):
-        cipher = AESCipher(rand_key)
-        if self.isprivate:
-            self.title = cipher.decrypt(self.title)
-            self.content = cipher.decrypt(self.content)
-            self.categories = cipher.decrypt(self.categories)
-
-    def encrypt(self, rand_key):
-        cipher = AESCipher(rand_key)
-        if self.isprivate:
-            self.title = cipher.encrypt(self.title)
-            self.content = cipher.encrypt(self.content)
-            self.categories = cipher.encrypt(self.categories)
-
-
 class User(db.Model):
+    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique=True, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
@@ -35,8 +12,7 @@ class User(db.Model):
     password = db.Column(db.Text)
     random_hashed = db.Column(db.Text, nullable=False)
     random_encrypted = db.Column(db.Text, nullable=False)
-    fk_notes = db.Column(db.Integer, db.ForeignKey(Note.id), nullable=True)
-    notes = db.relationship(Note)
+    notes = db.relationship('Note')
 
     def __init__(self): pass
 
@@ -78,3 +54,27 @@ class User(db.Model):
 
     def __str__(self):
         return self.username
+
+class Note(db.Model):
+    __tablename__ = "Note"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, default="Untitled")
+    content = db.Column(db.Text, default="No content")
+    isprivate = db.Column(db.Boolean, unique=False, nullable=False, default=True)
+    categories = db.Column(db.Text, unique=False, default="#nocategory")
+    user = db.relationship(User)
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+
+    def decrypt(self, rand_key):
+        cipher = AESCipher(rand_key)
+        if self.isprivate:
+            self.title = cipher.decrypt(self.title)
+            self.content = cipher.decrypt(self.content)
+            self.categories = cipher.decrypt(self.categories)
+
+    def encrypt(self, rand_key):
+        cipher = AESCipher(rand_key)
+        if self.isprivate:
+            self.title = cipher.encrypt(self.title)
+            self.content = cipher.encrypt(self.content)
+            self.categories = cipher.encrypt(self.categories)
