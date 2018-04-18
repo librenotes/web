@@ -1,11 +1,9 @@
 from project import app, cache, db, login_manager
 from flask import render_template, redirect, url_for, request, session, flash
 from flask_login import login_user, current_user, login_required, logout_user
-from .forms import RegisterForm, LoginForm
-from .models import User
+from .forms import RegisterForm, LoginForm, NoteForm
+from .models import User, Note
 from werkzeug.security import generate_password_hash, check_password_hash
-from Crypto.Cipher import AES
-from Crypto import Random
 
 
 @login_manager.user_loader
@@ -46,9 +44,9 @@ def login_post():
         user_ = User.query.filter_by(username=form.username.data).first()
         if user_ and check_password_hash(user_.password, form.password.data):
             login_user(user_)
-            session['rand_key'] = user_.get_random_key(form.password.data)
+            session['rand_key'] = user_.decrypt_rand_key(form.password.data)
             flash('Login Successful!', category='success')
-            return redirect(url_for('notes', user=form.username.data))
+            return redirect(url_for('notes', username=form.username.data))
         else:
             flash('Password or Username does not match', category='danger')
             return redirect(url_for("login_get"))
@@ -65,15 +63,16 @@ def register_post():
         email_ = User.query.filter_by(email=form.email.data).first()
         if not (user_ or email_):   # check if username or email address already exists.
             user = User()
-            user.create_rand_key(form.password.data)
             user.username = form.username.data
             user.password = generate_password_hash(form.password.data)
             user.email = form.email.data
+            user.generate_encryption_keys(form.password.data)
             db.session.add(user)
             db.session.commit()
             login_user(user)
+            session['rand_key'] = user.get_random_key(form.password.data)
             flash('Register Successful, now you are logged in!', category='success')
-            return redirect(url_for('notes', user=form.username.data))
+            return redirect(url_for('notes', username=form.username.data))
         else:
             flash('This username or email address is already in use', category='warning')
     else:
@@ -81,10 +80,39 @@ def register_post():
     return redirect(url_for('register_get'))
 
 
-@app.route("/notes/<user>")
-@login_required
-def notes(user):
+@app.route("/notes/<username>")
+def notes(username):
+    user_ = current_user
+    notes_list = []
+    if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
+        for note in Note.query.filter_by(Note.user.username=username).all():
+            note.decrypt(session.get("rand_key"))
+            print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
+    else:
+        for note in Note.query.filter_by(user.username=username, user.isprivate=False).all():
+            print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
+
     return render_template("notes.html.j2")
+
+
+@app.route("/new_test", methods=['GET'])
+@login_required
+def new():
+    user_ = current_user
+    if check_password_hash(user_.random_hashed, session.get("rand_key")):
+        for i in range(10):
+            note = Note()
+            note.title = "This is the {}. note's title".format(i)
+            note.content = "And this is the content of {}".format(i)
+            note.categories = "#And #we #have #crazy #categories #{}".format(i)
+            note.isprivate = True if i % 2 == 0 else False
+            note.encrypt(session.get("rand_key"))
+            db.session.add(note)
+            user_.notes.append(note)
+        db.session.commit()
+        return 'OK'
+    else:
+        return "FUCK MY ASS"
 
 
 @app.route("/logout")
@@ -96,5 +124,6 @@ def logout():
 
 @app.route("/dbc")
 def createdb():
+    db.drop_all()
     db.create_all()
     return "OK"
