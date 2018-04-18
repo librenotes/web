@@ -68,9 +68,9 @@ class Note(db.Model):
     def decrypt(self, rand_key):
         cipher = AESCipher(rand_key)
         if self.isprivate:
-            self.title = cipher.decrypt(self.title)
-            self.content = cipher.decrypt(self.content)
-            self.categories = cipher.decrypt(self.categories)
+            self.title = cipher.decrypt(self.title).decode("utf-8")
+            self.content = cipher.decrypt(self.content).decode("utf-8")
+            self.categories = cipher.decrypt(self.categories).decode("utf-8")
 
     def encrypt(self, rand_key):
         cipher = AESCipher(rand_key)

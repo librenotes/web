@@ -1,5 +1,5 @@
 from project import app, cache, db, login_manager
-from flask import render_template, redirect, url_for, request, session, flash
+from flask import render_template, redirect, url_for, request, session, flash, abort
 from flask_login import login_user, current_user, login_required, logout_user
 from .forms import RegisterForm, LoginForm, NoteForm
 from .models import User, Note
@@ -33,8 +33,12 @@ def register_get():
 
 @app.route("/login", methods=["GET"])
 def login_get():
-    form = LoginForm()
-    return render_template("login.html.j2", form=form)
+    if current_user:
+        flash("You are already logged in", "success")
+        return redirect(url_for('notes', username=current_user.username))
+    else:
+        form = LoginForm()
+        return render_template("login.html.j2", form=form)
 
 
 @app.route("/signin", methods=["POST"])
@@ -44,7 +48,7 @@ def login_post():
         user_ = User.query.filter_by(username=form.username.data).first()
         if user_ and check_password_hash(user_.password, form.password.data):
             login_user(user_)
-            session['rand_key'] = user_.decrypt_rand_key(form.password.data)
+            session['rand_key'] = user_.get_random_key(form.password.data)
             flash('Login Successful!', category='success')
             return redirect(url_for('notes', username=form.username.data))
         else:
@@ -83,16 +87,19 @@ def register_post():
 @app.route("/notes/<username>")
 def notes(username):
     user_ = current_user
-    notes_list = Note.query.filter_by(user=user_, isprivate=True).all()
-    print(notes_list)
+    notes = []
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
         for note in Note.query.filter_by(user=user_).all():
             note.decrypt(session.get("rand_key"))
-            print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
+            notes.append(note)
+        return render_template("notes.html.j2", notes=notes)
     else:
-        for note in Note.query.filter_by(user=user_, isprivate=False).all():
-            print("Title: {} Content: {} Categories: {} IsPrivate: {}".format(note.title, note.content, note.categories, note.isprivate))
-
+        searched_user = User.query.filter_by(username=username).first()
+        if searched_user is not None:
+            notes =  Note.query.filter_by(user=searched_user, isprivate=False).all()
+            return render_template("notes.html.j2", notes=notes)
+        else:
+            abort(404)
     return render_template("notes.html.j2")
 
 
