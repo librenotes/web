@@ -2,7 +2,7 @@
 body {padding-bottom: 70px;}
 
 
-ul > li {
+.delete-edit-button > li {
     display: inline-block;
     zoom:1;
     margin: 1px;

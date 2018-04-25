@@ -1,10 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, validators, HiddenField
-from flask_pagedown.fields import PageDownField
 from wtforms.widgets import TextArea
 from wtforms.validators import InputRequired, Email
 from wtforms.fields.html5 import EmailField
-
 
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired('Please enter your username.')])

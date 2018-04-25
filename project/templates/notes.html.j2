@@ -32,7 +32,6 @@
 <div class="container" style="padding-top:70px; padding-left:30px;padding-right:30px;">
 {{macro.flash()}}
   <div class="row">
-    <div class="row filter">
         {% for note in notes %}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
             <div class="box">
@@ -47,9 +46,9 @@
                 </div>
                 <div class="info"  data-provide="markdown">
                   <h4 class="text-center" id="t{{note.id}}">{{note.title}}</h4>
-                  <p id="b{{note.id}}">{{note.content}}</p>
+                  <span id="b{{note.id}}" value="{{note.content}}" style="text-align:left;">{{note.content|markdown}}</span>
                   <span value="{{note.isprivate}}" id="p{{note.id}}" hidden></span>
-                  <ul>
+                  <ul class="delete-edit-button">
                     <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
                     <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></span></a></li>
 
@@ -59,7 +58,6 @@
         </div>
         {% endfor %}
 
-	</div>
   </div>
 </div>
 {% endblock %}
@@ -80,7 +78,7 @@
   var button = $(event.relatedTarget)
   var id = button.data('whatever')
   var title = document.getElementById("t" + id).innerHTML;
-  var body = document.getElementById("b" + id).innerHTML;
+  var body = document.getElementById("b" + id).getAttribute("value");
   var privacy = document.getElementById("p" + id).getAttribute("value");
   var modal = $(this);
   modal.find('#edit-title').val(title);

@@ -106,17 +106,18 @@
        </div>
        <div class="form-group">
          <label for="note-content" class="col-form-label">Note:</label>
-         {{ form.content(class_="form-control", placeholder="Note") }}
+         {{ form.content(class_="form-control", placeholder="Note", id="edit-note") }}
        </div>
        <div class="form-group">
          <label for="note-categories" class="col-form-label">Category:</label>
-         {{ form.categories(class_="form-control", placeholder="Category", id="edit-category") }}
+         {{ form.categories(class_="form-control", placeholder="Category", id="edit-category", only_input=True, rows=10) }}
        </div>
        <div class="form-group">
          <button type="button" class="btn btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" id="edit-privacy-toggle">
          <div class="handle"></div>
        </button>
       </div>
+
       <div class="form-group">
         {{ form.isprivate(id="edit-isprivate", hidden="true") }}
       </div>
