@@ -28,15 +28,21 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top:70px">
+<div class="container" style="padding-top:70px; padding-left:30px;padding-right:30px;">
 {{macro.flash()}}
   <div class="row">
     <div class="row filter">
         {% for note in notes %}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
             <div class="box">
-                <div class="box-icon">
-                  <span class="fas fa-2x fa-sticky-note"></span>
+                  {% if note.isprivate %}
+                  <div class="box-icon" style="background-color:green;">
+                  <span class="fas fa-2x fa-lock"></span>
+                  {% else %}
+                  <div class="box-icon" style="background-color:red;">
+                  <span class="fas fa-2x fa-unlock"></span>
+
+                  {% endif %}
                 </div>
                 <div class="info">
                   <h4 class="text-center" id="t{{note.id}}">{{note.title|safe}}</h4>

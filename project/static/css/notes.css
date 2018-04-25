@@ -5,7 +5,7 @@ body {padding-bottom: 70px;}
 ul > li {
     display: inline-block;
     zoom:1;
-    margin: 5px;
+    margin: 1px;
 }
 a{
   color: #ffffff;
@@ -56,4 +56,66 @@ a:hover{
     display: table-cell;
     padding-top: 10px;
     text-align: left;
+}
+.btn-toggle {
+  padding: 0;
+  position: relative;
+  border: none;
+  height: 1.5rem;
+  width: 3rem;
+  border-radius: 1.5rem;
+  color: blue;
+  background: red;
+}
+.btn-toggle:focus,
+.btn-toggle.focus,
+.btn-toggle:focus.active,
+.btn-toggle.focus.active {
+  outline: none;
+}
+.btn-toggle:after {
+  line-height: 1.5rem;
+  width: 4rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: absolute;
+  bottom:  -2.5px;
+  transition: opacity .25s;
+}
+
+.btn-toggle:after {
+  content: 'Public';
+  right: -4.250rem;
+  opacity: .5;
+}
+.btn-toggle > .handle {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 1.125rem;
+  background: #fff;
+  transition: left .25s;
+}
+.btn-toggle.active {
+  transition: background-color 0.25s;
+}
+.btn-toggle.active > .handle {
+  left: 1.6875rem;
+  transition: left .25s;
+}
+
+.btn-toggle.active:after {
+  opacity: 1;
+  content : 'Private';
+}
+.btn-toggle:after {
+  color: black;
+}
+.btn-toggle.active {
+  background-color: green;
 }
