@@ -20,7 +20,7 @@
       </ul>
       <form class="form-inline">
         <input class="form-control mr-sm-2" type="search" placeholder="Ara" aria-label="Search">
-        <button class="btn btn-default" type="submit"><span class="fas fa-search"></button>
+          <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
       </form>
 
     </div>
@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top:50px">
+<div class="container" style="padding-top:70px">
 {{macro.flash()}}
   <div class="row">
     <div class="row filter">
@@ -43,7 +43,7 @@
                   <p id="b{{note.id}}">{{note.content|safe}}</p>
                   <ul>
                     <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
-                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></a></span></li>
+                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></span></a></li>
 
                     </ul>
                 </div>
@@ -52,7 +52,7 @@
         {% endfor %}
 
 	</div>
-
+  </div>
 </div>
 {% endblock %}
 {% block createmodal %}
