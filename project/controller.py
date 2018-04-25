@@ -127,6 +127,7 @@ def new():
 @app.route("/logout")
 @login_required
 def logout():
+    session.pop('rand_key')
     logout_user()
     return 'OK'
 
