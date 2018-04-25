@@ -1,7 +1,7 @@
 from project import app, cache, db, login_manager
 from flask import render_template, redirect, url_for, request, session, flash, abort
 from flask_login import login_user, current_user, login_required, logout_user
-from .forms import RegisterForm, LoginForm, NoteForm
+from .forms import RegisterForm, LoginForm, NoteForm, DeleteNoteForm
 from .models import User, Note
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -86,21 +86,22 @@ def register_post():
 
 @app.route("/notes/<username>")
 def notes(username):
+    edit_form = NoteForm()
+    delete_form = DeleteNoteForm()
     user_ = current_user
     notes = []
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
         for note in Note.query.filter_by(user=user_).all():
             note.decrypt(session.get("rand_key"))
             notes.append(note)
-        return render_template("notes.html.j2", notes=notes)
+        return render_template("notes.html.j2", notes=notes, edit_form=edit_form, delete_form=delete_form)
     else:
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
             notes =  Note.query.filter_by(user=searched_user, isprivate=False).all()
-            return render_template("notes.html.j2", notes=notes)
-        else:
-            abort(404)
-    return render_template("notes.html.j2")
+            return render_template("notes.html.j2", notes=notes, edit_form = edit_form, delete_form= delete_form)
+
+    abort(404)
 
 
 @app.route("/new_test", methods=['GET'])
@@ -133,11 +134,13 @@ def logout():
     return 'OK'
 
 
-@app.route("/edit", methods=["PUT"])
+@app.route("/edit", methods=["POST"])
 @login_required
 def edit_note():
     form = NoteForm(request.form)
     user_ = current_user
+    print(form.content.data)
+    print(type(form.isprivate.data))
     note = Note.query.filter_by(user=user_, id=form.id.data).first()
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
         note.decrypt(session.get("rand_key"))
@@ -151,7 +154,7 @@ def edit_note():
     return str(500)
 
 
-@app.route("/new", methods=["PUT"])
+@app.route("/new", methods=["POST"])
 @login_required
 def add_note():
     form = NoteForm(request.form)
@@ -170,10 +173,10 @@ def add_note():
     return str(500)
 
 
-@app.route("/delete", methods=["DELETE"])
+@app.route("/delete", methods=["POST"])
 @login_required
 def delete_note():
-    form = NoteForm(request.form)
+    form = DeleteNoteForm(request.form)
     user_ = current_user
     note = Note.query.filter_by(user=user_, id=form.id.data).first()
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):

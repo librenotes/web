@@ -10,7 +10,7 @@
 {% endwith %}
 {%- endmacro %}
 
-{% macro createmodal() -%}
+{% macro createmodal(form) -%}
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">
@@ -21,56 +21,70 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Title:</label>
-        <input type="text" class="form-control" id="create-title">
+    <form method="post" action="{{url_for('add_note')}}">
+
+       {{ form.csrf_token }}
+       <div class="form-group">
+         {{ form.id(class_="form-control", id="create-id") }}
+       </div>
+       <div class="form-group">
+         <label for="note-title" class="col-form-label">Title:</label>
+         {{ form.title(class_="form-control", placeholder="Title", id="create-title") }}
+       </div>
+       <div class="form-group">
+         <label for="note-content" class="col-form-label">Note:</label>
+         {{ form.content(class_="form-control", placeholder="Note") }}
+       </div>
+       <div class="form-group">
+         <label for="note-categories" class="col-form-label">Category:</label>
+         {{ form.categories(class_="form-control", placeholder="Category", id="create-category") }}
+       </div>
+       <div class="form-group">
+         <button type="button" class="btn btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
+         <div class="handle"></div>
+       </button>
       </div>
-      <div class="form-group">
-        <label for="message-text" class="col-form-label">Note:</label>
-        <textarea class="form-control" id="create-note"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Labels:</label>
-        <input type="text" class="form-control" id="create-hashtag">
-      </div>
-    </form>
+
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Save</button>
   </div>
+</form>
+
 </div>
 </div>
 </div>
 {%- endmacro %}
-{% macro deletemodal() %}
+{% macro deletemodal(form) %}
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title" id="deleteModalLabel">Add new note</h5>
+    <h5 class="modal-title" id="deleteModalLabel"></h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <h5 class="modal-title" id="deleteModalLabel">Do you really want to delete this note?</h5>
-      <div class="form-group">
-        <input type="text" class="form-control" id="delete" hidden>
-      </div>
+    <form method="post" action="{{url_for('delete_note')}}">
+       {{ form.csrf_token }}
+       <h5 class="modal-title" id="deleteModalLabel">Do you really want to delete this note?</h5>
+       <div class="form-group">
+         {{ form.id(class_="form-control", id="delete-id") }}
+       </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </div>
     </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-    <button type="button" class="btn btn-primary">Delete</button>
-  </div>
 </div>
 </div>
 </div>
 {% endmacro %}
-{% macro editmodal() %}
+{% macro editmodal(form) %}
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">
@@ -81,25 +95,40 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Title:</label>
-        <input type="text" class="form-control" id="edit-title">
+    <form method="post" action="{{url_for('edit_note')}}">
+       {{ form.csrf_token }}
+       <div class="form-group">
+         {{ form.id(class_="form-control", id="edit-id") }}
+       </div>
+       <div class="form-group">
+         <label for="note-title" class="col-form-label">Title:</label>
+         {{ form.title(class_="form-control", placeholder="Title", id="edit-title") }}
+       </div>
+       <div class="form-group">
+         <label for="note-content" class="col-form-label">Note:</label>
+         {{ form.content(class_="form-control", placeholder="Note") }}
+       </div>
+       <div class="form-group">
+         <label for="note-categories" class="col-form-label">Category:</label>
+         {{ form.categories(class_="form-control", placeholder="Category", id="edit-category") }}
+       </div>
+       <div class="form-group">
+         <button type="button" class="btn btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" id="edit-privacy-toggle">
+         <div class="handle"></div>
+       </button>
       </div>
       <div class="form-group">
-        <label for="message-text" class="col-form-label">Note:</label>
-        <textarea class="form-control" id="edit-note"></textarea>
+        {{ form.isprivate(id="edit-isprivate", hidden="true") }}
       </div>
-      <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Labels:</label>
-        <input type="text" class="form-control" id="edit-hashtag">
-      </div>
-    </form>
+
+
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Save</button>
   </div>
+</form>
 </div>
 </div>
 </div>

@@ -20,6 +20,7 @@ a:hover{
     text-align: right;
     display: block;
     margin-top: 90px;
+    word-wrap: break-word;
 }
 .box:hover{
    transform: scale(1.05);
