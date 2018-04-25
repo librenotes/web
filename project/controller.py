@@ -5,6 +5,7 @@ from .forms import RegisterForm, LoginForm, NoteForm
 from .models import User, Note
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter_by(id=user_id).first()
@@ -130,6 +131,56 @@ def logout():
     session.pop('rand_key')
     logout_user()
     return 'OK'
+
+
+@app.route("/edit", methods=["PUT"])
+@login_required
+def edit_note():
+    form = NoteForm(request.form)
+    user_ = current_user
+    note = Note.query.filter_by(user=user_, id=form.id.data).first()
+    if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
+        note.decrypt(session.get("rand_key"))
+        note.title = form.title.data
+        note.content = form.content.data
+        note.categories = form.categories.data
+        note.isprivate = form.isprivate.data
+        note.encrypt(session.get("rand_key"))
+        db.session.commit()
+        return str(200)
+    return str(500)
+
+
+@app.route("/new", methods=["PUT"])
+@login_required
+def add_note():
+    form = NoteForm(request.form)
+    user_ = current_user
+    if check_password_hash(user_.random_hashed, session.get("rand_key")):
+        note = Note()
+        note.title = form.title.data
+        note.content = form.content.data
+        note.categories = form.categories.data
+        note.isprivate = form.isprivate.data
+        note.encrypt(session.get("rand_key"))
+        db.session.add(note)
+        user_.notes.append(note)
+        db.session.commit()
+        return str(200)
+    return str(500)
+
+
+@app.route("/delete", methods=["DELETE"])
+@login_required
+def delete_note():
+    form = NoteForm(request.form)
+    user_ = current_user
+    note = Note.query.filter_by(user=user_, id=form.id.data).first()
+    if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
+        db.session.delete(note)
+        db.session.commit()
+        return str(200)
+    return str(500)
 
 
 @app.route("/dbc")
