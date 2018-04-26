@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-signin" method="post" action="{{url_for('login_post')}}">
+<form class="form-signin" method="post" action="{{url_for('app_login.login_post')}}">
   <h1 class="h3 mb-3 font-weight-normal text-center">Login</h1>
   {{messageflash.flash()}}
 

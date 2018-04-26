@@ -1,6 +1,6 @@
 from project import db
 from werkzeug.security import generate_password_hash, pbkdf2_bin
-from .aesCipher import AESCipher
+from .cipher import AESCipher
 from os import urandom
 
 class User(db.Model):

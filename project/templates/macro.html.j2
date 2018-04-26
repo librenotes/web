@@ -21,7 +21,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form method="post" action="{{url_for('add_note')}}">
+    <form method="post" action="{{url_for('app_notes.add_note')}}">
 
        {{ form.csrf_token }}
        <div class="form-group">
@@ -68,7 +68,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form method="post" action="{{url_for('delete_note')}}">
+    <form method="post" action="{{url_for('app_notes.delete_note')}}">
        {{ form.csrf_token }}
        <h5 class="modal-title" id="deleteModalLabel">Do you really want to delete this note?</h5>
        <div class="form-group">
@@ -95,7 +95,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form method="post" action="{{url_for('edit_note')}}">
+    <form method="post" action="{{url_for('app_notes.edit_note')}}">
        {{ form.csrf_token }}
        <div class="form-group">
          {{ form.id(class_="form-control", id="edit-id") }}

@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="#createModal" data-toggle="modal"><span class="fas fa-2x fa-pencil-alt"></span></a>
+
         </li>
 
       </ul>
@@ -29,37 +29,37 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top:70px; padding-left:30px;padding-right:30px;">
 {{macro.flash()}}
-  <div class="row">
-        {% for note in notes %}
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-            <div class="box">
-                  {% if note.isprivate %}
+<div class="notes" style="padding-top:70px;">
+   {% for note in notes %}
+
+  <div class="note">
+    <div class="note-inner">
+      {% if note.isprivate %}
                   <div class="box-icon" style="background-color:green;">
                   <span class="fas fa-2x fa-lock"></span>
+                </div>
                   {% else %}
                   <div class="box-icon" style="background-color:red;">
                   <span class="fas fa-2x fa-unlock"></span>
+    </div>
+  {% endif %}
+  <br>
+      <h4 class="text-center" id="t{{note.id}}">{{note.title}}</h4>
+    <span id="b{{note.id}}" value="{{note.content}}">{{note.content|markdown}}</span>
+     <span value="{{note.isprivate}}" id="p{{note.id}}" hidden></span>
+    <ul class="delete-edit-button" style="float:right;">
+      <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
+      <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></span></a></li>
 
-                  {% endif %}
-                </div>
-                <div class="info"  data-provide="markdown">
-                  <h4 class="text-center" id="t{{note.id}}">{{note.title}}</h4>
-                  <span id="b{{note.id}}" value="{{note.content}}" style="text-align:left;">{{note.content|markdown}}</span>
-                  <span value="{{note.isprivate}}" id="p{{note.id}}" hidden></span>
-                  <ul class="delete-edit-button">
-                    <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
-                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></span></a></li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
+   </ul>
+    </div>
   </div>
+   {% endfor %}
 </div>
+      <a href="#createModal" data-toggle="modal"><button class="big-add show-add-note"><span class="fas fa-pencil-alt"></span></button></a>
+
+
 {% endblock %}
 {% block createmodal %}
   {{macro.createmodal(edit_form)}}
@@ -72,6 +72,8 @@
 {% endblock %}
 {% block scripts %}
   {{super()}}
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.1/isotope.pkgd.js'></script>
 
 <script type="text/javascript">
   $('#editModal').on('show.bs.modal', function (event) {

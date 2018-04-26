@@ -1,29 +1,36 @@
-
-body {padding-bottom: 70px;}
-
-
+body {
+  background-color: #e8e8e8;
+  padding: 10px;
+}
 .delete-edit-button > li {
     display: inline-block;
     zoom:1;
     margin: 1px;
 }
-a{
-  color: #ffffff;
+.notes {
+  margin: 0 auto;
 }
-a:hover{
-  color: #f1f5f7;
+.note {
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
 }
-.box {
-    border-radius: 3px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    padding: 10px 25px;
-    text-align: right;
-    display: block;
-    margin-top: 90px;
-    word-wrap: break-word;
+
+@media screen and (min-width: 560px) {
+  .note {
+    width: 50%;
+  }
+
 }
-.box:hover{
-   transform: scale(1.05);
+@media screen and (min-width: 816px) {
+  .note {
+    width: 33.3%;
+  }
+}
+@media screen and (min-width: 1072px) {
+  .note {
+    width: 25%;
+  }
 }
 .box-icon {
     background-color: #bdbdbd;
@@ -32,7 +39,7 @@ a:hover{
     height: 100px;
     margin: 0 auto;
     width: 100px;
-    margin-top: -61px;
+    margin-top: -65px;
 }
 .box-icon span {
     color: #fff;
@@ -40,23 +47,43 @@ a:hover{
     text-align: center;
     vertical-align: middle;
 }
-.info h4 {
-    font-size: 26px;
-    letter-spacing: 2px;
-    text-align: center;
+
+.note-inner {
+  background-color: #fff;
+  min-height: 4em;
+  border-radius: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 45px;
+  padding-top: 25px;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s;
+  word-wrap: break-word;
+
 }
-.info > p {
-    color: #717171;
-    font-size: 16px;
-    padding-top: 10px;
-    text-align: justify;
+.note:hover .note-inner {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
-.info > hashtag {
-    color: #000000;
-    font-size: 16px;
-    display: table-cell;
-    padding-top: 10px;
-    text-align: left;
+.big-add {
+  background-color: #F44336;
+  color: #fff;
+  padding: 0;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  border: none;
+  box-shadow: none;
+  width: 56px;
+  height: 56px;
+  padding: 16px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+.big-add i {
+  font-size: 24px;
+  line-height: 24px;
 }
 .btn-toggle {
   padding: 0;

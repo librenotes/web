@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-signin" method="post" action="{{url_for('register_post')}}">
+<form class="form-signin" method="post" action="{{url_for('app_register.register_post')}}">
   <h1 class="h3 mb-3 font-weight-normal text-center">Register</h1>
   {{messageflash.flash()}}
    {{ form.csrf_token }}
