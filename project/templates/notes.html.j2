@@ -29,8 +29,11 @@
 {% endblock %}
 
 {% block content %}
+<div style="padding-top:50px;">
 {{macro.flash()}}
-<div class="notes" style="padding-top:70px;">
+
+<div class="notes" style="padding-top:20px;">
+
    {% for note in notes %}
 
   <div class="note">

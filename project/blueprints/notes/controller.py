@@ -1,5 +1,5 @@
 from project import db
-from flask import render_template, request, session, abort, Blueprint
+from flask import render_template, request, session, abort, Blueprint, flash
 from flask_login import current_user, login_required
 from .forms import NoteForm, DeleteNoteForm
 from project.models import User, Note
@@ -21,8 +21,9 @@ def notes(username):
     else:
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
+            flash("You are seeing public notes of {}".format(searched_user.username), "warning")
             notes =  Note.query.filter_by(user=searched_user, isprivate=False).all()
-            return render_template("notes.html.j2", notes=notes, edit_form = edit_form, delete_form= delete_form)
+            return render_template("notes_public.html.j2", notes=notes)
 
     abort(404)
 
