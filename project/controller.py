@@ -2,8 +2,10 @@ from project import app, cache, db, login_manager
 from flask import render_template, redirect, url_for, request, session, flash, abort
 from flask_login import login_user, current_user, login_required, logout_user
 from .forms import RegisterForm, LoginForm, NoteForm
-from .models import User, Note
+from .models import User, Note, Category
 from werkzeug.security import generate_password_hash, check_password_hash
+from re import split
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -87,19 +89,23 @@ def register_post():
 def notes(username):
     user_ = current_user
     notes = []
+    categories = []
+    rand_key = session.get("rand_key")
+
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
         for note in Note.query.filter_by(user=user_).all():
-            note.decrypt(session.get("rand_key"))
+            note.decrypt(rand_key)
             notes.append(note)
-        return render_template("notes.html.j2", notes=notes)
+        for category in user_.categories:
+            categories.append(category)
     else:
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
-            notes =  Note.query.filter_by(user=searched_user, isprivate=False).all()
-            return render_template("notes.html.j2", notes=notes)
+            notes = Note.query.filter_by(user=searched_user, isprivate=False).all()
+            categories = Category.query.filter_by(isprivate=False).filter(Category.users.any(User.id == searched_user.id)).all()
         else:
             abort(404)
-    return render_template("notes.html.j2")
+    return render_template("notes.html.j2", notes=notes)
 
 
 @app.route("/new_test", methods=['GET'])
@@ -107,21 +113,33 @@ def notes(username):
 def new():
     user_ = current_user
     user_ = User.query.filter_by(id=user_.id).first()
-    print(user_.notes)
     if check_password_hash(user_.random_hashed, session.get("rand_key")):
         for i in range(10):
             note = Note()
             note.title = "This is the {}. note's title".format(i)
             note.content = "And this is the content of {}".format(i)
-            note.categories = "#And #we #have #crazy #categories #{}".format(i)
             note.isprivate = True if i % 2 == 0 else False
-            note.encrypt(session.get("rand_key"))
             db.session.add(note)
+            categories = split(r' ?#', "#And #we #have #crazy #categories #{}".format(i).lower())
+            categories.remove('')
+            if not note.isprivate:
+                categories.append('public')
+            for category_name in categories:
+                if note.isprivate:
+                    category = Category(name=category_name, isprivate=note.isprivate)
+                else:
+                    category = Category.query.filter_by(name=category_name).first()
+                    if category is None:
+                        category = Category(name=category_name, isprivate=note.isprivate)
+                db.session.add(category)
+                category.notes.append(note)
+                category.users.append(user_)
+            note.encrypt(session.get("rand_key"))
             user_.notes.append(note)
         db.session.commit()
         return 'OK'
     else:
-        return "FUCK MY ASS"
+        return "YOU ARE FAKE!!!"
 
 
 @app.route("/logout")
@@ -136,4 +154,56 @@ def logout():
 def createdb():
     db.drop_all()
     db.create_all()
+    user = User()
+    user.username = 'asd'
+    user.password = generate_password_hash('asd')
+    user.email = 'asd@gmail.com'
+    user.generate_encryption_keys('asd')
+    print(session['rand_key'])
+    db.session.add(user)
+    db.session.commit()
+    login_user(user)
+    session['rand_key'] = user.get_random_key('asd')
     return "OK"
+
+
+def user_categories(username):
+    user_ = current_user
+    categories = []
+    if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
+        rand_key = session.get("rand_key")
+        for category in user_.categories:
+            category.decrypt(rand_key)
+            categories.append(category)
+    else:
+        searched_user = User.query.filter_by(username=username)
+        if searched_user:
+            categories = Category.query.filter_by(isprivate=False).filter(Category.users.any(User.id == searched_user.id)).all()
+    return categories
+
+
+@app.route("/notes/<username>/<category_name>")
+def filter_cat(username, category_name):
+    user_ = current_user
+    category_name = category_name.lower()
+    notes = []
+    if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed, session.get("rand_key")):
+        rand_key = session.get("rand_key")
+        for category in user_.categories.all():
+            category.decrypt(rand_key)
+            if category.name == category_name:
+                notes_ = Note.query.filter_by(user=user_).filter(Note.categories.any(Category.id == category.id)).all()
+                for note in notes_:
+                    note.decrypt(rand_key)
+                    notes.append(note)
+        return render_template("notes.html.j2", notes=notes)
+    else:
+        searched_user = User.query.filter_by(username=username).first()
+        if searched_user is not None:
+            for note in Note.query.filter_by(isprivate=False, user=searched_user).filter(Note.categories.any(Category.name == category_name)).all():
+                notes.append(note)
+
+            return render_template("notes.html.j2", notes=notes)
+        else:
+            abort(404)
+    return render_template("notes.html.j2")
