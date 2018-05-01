@@ -1,6 +1,6 @@
 from project import db
 from werkzeug.security import generate_password_hash, pbkdf2_bin
-from .aesCipher import AESCipher
+from .cipher import AESCipher
 from os import urandom
 
 category_note = db.Table('Category_Note',

@@ -2,89 +2,121 @@
 {% import "macro.html.j2" as macro %}
 
 {% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/notes.css') }}">
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notes.css') }}">
+
 {% endblock %}
 {% block navbar %}
-  <nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top" >
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="#createModal" data-toggle="modal"><span class="fas fa-2x fa-pencil-alt"></span></a>
-        </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
 
-      </ul>
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Ara" aria-label="Search">
-          <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
-      </form>
+                </li>
 
-    </div>
-  </nav>
+            </ul>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Ara" aria-label="Search">
+                <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
+            </form>
+
+        </div>
+    </nav>
 {% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top:70px">
-{{macro.flash()}}
-  <div class="row">
-    <div class="row filter">
+    <div style="padding-top:50px;">
+        {{ macro.flash() }}
+    </div>
+    <div class="notes" style="padding-top:20px;">
+
         {% for note in notes %}
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-            <div class="box">
-                <div class="box-icon">
-                  <span class="fas fa-2x fa-sticky-note"></span>
-                </div>
-                <div class="info">
-                  <h4 class="text-center" id="t{{note.id}}">{{note.title|safe}}</h4>
-                  <p id="b{{note.id}}">{{note.content|safe}}</p>
-                  <ul>
-                    <li><a style="color:#343a40;" href="#editModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-edit"></span></a></li>
-                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal" data-whatever="{{note.id}}"><span class="far fa-2x fa-trash-alt"></span></a></li>
+
+            <div class="note">
+                <div class="note-inner">
+                    {% if note.isprivate %}
+                        <div class="box-icon" style="background-color:green;">
+                            <span class="fas fa-2x fa-lock"></span>
+                        </div>
+                    {% else %}
+                        <div class="box-icon" style="background-color:red;">
+                            <span class="fas fa-2x fa-unlock"></span>
+                        </div>
+                    {% endif %}
+                    <br>
+                    <h4 class="text-center" id="t{{ note.id }}">{{ note.title }}</h4>
+                    <span id="b{{ note.id }}" value="{{ note.content }}">{{ note.content|markdown }}</span>
+                    <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
+                    <ul class="delete-edit-button" style="float:right;">
+                        <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
+                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
+                        <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
+                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-trash-alt"></span></a></li>
 
                     </ul>
                 </div>
             </div>
-        </div>
         {% endfor %}
+    </div>
+    <a href="#createModal" data-toggle="modal">
+        <button class="big-add show-add-note"><span class="fas fa-pencil-alt"></span></button>
+    </a>
 
-	</div>
-  </div>
-</div>
+
 {% endblock %}
 {% block createmodal %}
-  {{macro.createmodal()}}
+    {{ macro.createmodal(edit_form) }}
 {% endblock %}
 {% block editmodel %}
-  {{macro.editmodal()}}
+    {{ macro.editmodal(edit_form) }}
 {% endblock %}
 {% block deletemodal %}
-  {{macro.deletemodal()}}
+    {{ macro.deletemodal(delete_form) }}
 {% endblock %}
 {% block scripts %}
-  {{super()}}
-<script type="text/javascript">
-  $('#editModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget)
-  var id = button.data('whatever')
-  var title = document.getElementById("t" + id).innerHTML;
-  var body = document.getElementById("b" + id).innerHTML;
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.1/isotope.pkgd.js'></script>
 
-  var modal = $(this);
-  modal.find('#edit-title').val(title);
-  modal.find('#edit-note').val(body);
-});
-</script>
-<script type="text/javascript">
-  $('#deleteModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget);
-  var id = button.data('whatever');
-  var modal = $(this);
-  console.log(id);
-  modal.find('#delete').val(id);
-});
-</script>
+    <script type="text/javascript">
+        $('#editModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget)
+            let id = button.data('whatever')
+            let title = document.getElementById("t" + id).innerHTML;
+            let body = document.getElementById("b" + id).getAttribute("value");
+            let privacy = document.getElementById("p" + id).getAttribute("value");
+            let modal = $(this);
+            modal.find('#edit-title').val(title);
+            modal.find('#edit-note').val(body);
+            modal.find('#edit-id').val(id);
+            modal.find('#edit-category').val("category");
+            if (privacy === "True") {
+                modal.find('#edit-privacy-toggle').addClass("active");
+                modal.find('#edit-isprivate').prop('checked', true);
+
+            }
+            else {
+                modal.find('#edit-privacy-toggle').removeClass("active");
+                modal.find('#edit-isprivate').prop('checked', false);
+
+            }
+            modal.find('#edit-privacy-toggle').click(function () {
+                var checked = modal.find('#edit-isprivate').prop('checked');
+                modal.find('#edit-isprivate').prop('checked', !checked);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let id = button.data('whatever');
+            let modal = $(this);
+            modal.find('#delete-id').val(id);
+        });
+    </script>
 {% endblock %}
