@@ -1,4 +1,3 @@
-from project import db, login_manager
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint
 from project.models import User
 from .forms import LoginForm
@@ -6,6 +5,7 @@ from flask_login import current_user, login_user
 from werkzeug.security import check_password_hash
 
 bp_login = Blueprint('app_login', __name__, url_prefix='/login')
+
 
 def flash_errors(form):
     for field, errors in form.errors.items():

@@ -1,14 +1,12 @@
 from flask import Flask, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config as conf
-from flask_cache import Cache
 from flask_login import LoginManager, login_required, logout_user
 from flaskext.markdown import Markdown
 
 app = Flask(__name__)
 app.config.from_object(conf)
 Markdown(app)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 login_manager = LoginManager()
 login_manager.init_app(app=app)
 db = SQLAlchemy(app)
@@ -52,3 +50,11 @@ def logout():
 @app.route("/")
 def index():
     return render_template("index.html.j2")
+
+
+
+@app.route("/dbc")
+def createdb():
+    db.drop_all()
+    db.create_all()
+    return "OK"

@@ -2,8 +2,11 @@ from project import db
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint
 from project.models import User
 from .forms import RegisterForm
+from werkzeug.security import generate_password_hash
+from flask_login import  login_user
 
 bp_register = Blueprint('app_register', __name__, url_prefix='/register')
+
 
 def flash_errors(form):
     for field, errors in form.errors.items():
@@ -26,7 +29,7 @@ def register_post():
     if form.validate():
         user_ = User.query.filter_by(username=form.username.data).first()
         email_ = User.query.filter_by(email=form.email.data).first()
-        if not (user_ or email_):   # check if username or email address already exists.
+        if not (user_ or email_):  # check if username or email address already exists.
             user = User()
             user.username = form.username.data
             user.password = generate_password_hash(form.password.data)

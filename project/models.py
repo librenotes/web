@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .cipher import AESCipher
 from os import urandom
 
+
 class User(db.Model):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
@@ -54,6 +55,7 @@ class User(db.Model):
 
     def __str__(self):
         return self.username
+
 
 class Note(db.Model):
     __tablename__ = "Note"

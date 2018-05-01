@@ -1,6 +1,6 @@
 class Config(object):
     DEBUG = True
-    SECRET_KEY="nbmxmVlanyiCum15prqNn5B1aw/uawQai8zkr5h+q1Eg8cbTtkOKCIluevwFLLvNhc62hP6ZN8C/wjNJqD7vZg=="
+    SECRET_KEY = "nbmxmVlanyiCum15prqNn5B1aw/uawQai8zkr5h+q1Eg8cbTtkOKCIluevwFLLvNhc62hP6ZN8C/wjNJqD7vZg=="
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db'
     CACHE_TYPE = "redis"

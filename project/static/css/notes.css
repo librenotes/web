@@ -1,37 +1,43 @@
 body {
-  background-color: #e8e8e8;
-  padding: 10px;
+    background-color: #e8e8e8;
+    padding: 10px;
 }
+
 .delete-edit-button > li {
     display: inline-block;
-    zoom:1;
+    zoom: 1;
     margin: 1px;
 }
+
 .notes {
-  margin: 0 auto;
+    margin: 0 auto;
 }
+
 .note {
-  width: 100%;
-  padding: 25px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 25px;
+    box-sizing: border-box;
 }
 
 @media screen and (min-width: 560px) {
-  .note {
-    width: 50%;
-  }
+    .note {
+        width: 50%;
+    }
 
 }
+
 @media screen and (min-width: 816px) {
-  .note {
-    width: 33.3%;
-  }
+    .note {
+        width: 33.3%;
+    }
 }
+
 @media screen and (min-width: 1072px) {
-  .note {
-    width: 25%;
-  }
+    .note {
+        width: 25%;
+    }
 }
+
 .box-icon {
     background-color: #bdbdbd;
     border-radius: 50%;
@@ -41,6 +47,7 @@ body {
     width: 100px;
     margin-top: -65px;
 }
+
 .box-icon span {
     color: #fff;
     display: table-cell;
@@ -49,101 +56,112 @@ body {
 }
 
 .note-inner {
-  background-color: #fff;
-  min-height: 4em;
-  border-radius: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 45px;
-  padding-top: 25px;
-  border-radius: 3px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  transition: box-shadow 0.2s;
-  word-wrap: break-word;
+    background-color: #fff;
+    min-height: 4em;
+    border-radius: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 45px;
+    padding-top: 25px;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.2s;
+    word-wrap: break-word;
 
 }
+
 .note:hover .note-inner {
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
+
 .big-add {
-  background-color: #F44336;
-  color: #fff;
-  padding: 0;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  border: none;
-  box-shadow: none;
-  width: 56px;
-  height: 56px;
-  padding: 16px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  cursor: pointer;
+    background-color: #F44336;
+    color: #fff;
+    padding: 0;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    border: none;
+    box-shadow: none;
+    width: 56px;
+    height: 56px;
+    padding: 16px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    cursor: pointer;
 }
+
 .big-add i {
-  font-size: 24px;
-  line-height: 24px;
+    font-size: 24px;
+    line-height: 24px;
 }
+
 .btn-toggle {
-  padding: 0;
-  position: relative;
-  border: none;
-  height: 1.5rem;
-  width: 3rem;
-  border-radius: 1.5rem;
-  color: blue;
-  background: red;
+    padding: 0;
+    position: relative;
+    border: none;
+    height: 1.5rem;
+    width: 3rem;
+    border-radius: 1.5rem;
+    color: blue;
+    background: red;
 }
+
 .btn-toggle:focus,
 .btn-toggle.focus,
 .btn-toggle:focus.active,
 .btn-toggle.focus.active {
-  outline: none;
-}
-.btn-toggle:after {
-  line-height: 1.5rem;
-  width: 4rem;
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  position: absolute;
-  bottom:  -2.5px;
-  transition: opacity .25s;
+    outline: none;
 }
 
 .btn-toggle:after {
-  content: 'Public';
-  right: -4.250rem;
-  opacity: .5;
+    line-height: 1.5rem;
+    width: 4rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: absolute;
+    bottom: -2.5px;
+    transition: opacity .25s;
 }
+
+.btn-toggle:after {
+    content: 'Public';
+    right: -4.250rem;
+    opacity: .5;
+}
+
 .btn-toggle > .handle {
-  position: absolute;
-  top: 0.1875rem;
-  left: 0.1875rem;
-  width: 1.125rem;
-  height: 1.125rem;
-  border-radius: 1.125rem;
-  background: #fff;
-  transition: left .25s;
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 1.125rem;
+    background: #fff;
+    transition: left .25s;
 }
+
 .btn-toggle.active {
-  transition: background-color 0.25s;
+    transition: background-color 0.25s;
 }
+
 .btn-toggle.active > .handle {
-  left: 1.6875rem;
-  transition: left .25s;
+    left: 1.6875rem;
+    transition: left .25s;
 }
 
 .btn-toggle.active:after {
-  opacity: 1;
-  content : 'Private';
+    opacity: 1;
+    content: 'Private';
 }
+
 .btn-toggle:after {
-  color: black;
+    color: black;
 }
+
 .btn-toggle.active {
-  background-color: green;
+    background-color: green;
 }

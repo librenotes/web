@@ -2,6 +2,7 @@ from Crypto.Cipher import AES
 from Crypto import Random
 import base64
 
+
 class AESCipher:
 
     def __init__(self, key):
@@ -19,15 +20,15 @@ class AESCipher:
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
         return self.unpad(cipher.decrypt(enc[AES.block_size:]))
 
-    def pad(self,s):
+    def pad(self, s):
         BS = 16
         if type(s) == str:
             s = s.encode('utf-8')
         remainder = (BS - len(s) % BS)
-        pad = (chr(remainder)*remainder).encode('utf-8')
+        pad = (chr(remainder) * remainder).encode('utf-8')
         padded_s = s + pad
         return padded_s
 
-    def unpad(self,s):
+    def unpad(self, s):
         s = s[:-ord(s[len(s) - 1:])]
         return s
