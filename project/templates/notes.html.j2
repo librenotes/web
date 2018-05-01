@@ -32,7 +32,7 @@
 {% block content %}
     <div style="padding-top:50px;">
     {{ macro.flash() }}
-
+    </div>
     <div class="notes" style="padding-top:20px;">
 
         {% for note in notes %}
@@ -85,12 +85,12 @@
 
     <script type="text/javascript">
         $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var id = button.data('whatever')
-            var title = document.getElementById("t" + id).innerHTML;
-            var body = document.getElementById("b" + id).getAttribute("value");
-            var privacy = document.getElementById("p" + id).getAttribute("value");
-            var modal = $(this);
+            let button = $(event.relatedTarget)
+            let id = button.data('whatever')
+            let title = document.getElementById("t" + id).innerHTML;
+            let body = document.getElementById("b" + id).getAttribute("value");
+            let privacy = document.getElementById("p" + id).getAttribute("value");
+            let modal = $(this);
             modal.find('#edit-title').val(title);
             modal.find('#edit-note').val(body);
             modal.find('#edit-id').val(id);
@@ -113,9 +113,9 @@
     </script>
     <script type="text/javascript">
         $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('whatever');
-            var modal = $(this);
+            let button = $(event.relatedTarget);
+            let id = button.data('whatever');
+            let modal = $(this);
             modal.find('#delete-id').val(id);
         });
     </script>
