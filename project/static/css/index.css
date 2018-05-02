@@ -1,0 +1,59 @@
+.header{
+  padding-top: 37%;
+}
+
+
+.logbut{
+  background-color: red;
+  padding: 15px 25px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+}
+
+.progpos{
+  padding-top: 45%;
+}
+
+.progress-bar{
+  background-color: red;
+  width: 40%;
+}
+
+.progress{
+  height: 40px;
+  border-radius: 12px;
+}
+
+.btn-lg{
+  background-color: red;
+  border-radius: 12px;
+  padding: 15px;
+
+}
+
+.donatorlog{
+  padding-left: 40%;
+  font-size: 22px;
+}
+
+h1{
+  font-size: 60px;
+  text-align: center;
+}
+
+h2{
+  font-size: 70px;
+  text-align: center;
+}
+
+h3{
+  font-size: 35px;
+  text-align: center;
+
+}
+
+p1,p2{
+  font-size:20px;
+  text-align:center;
+}
