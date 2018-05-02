@@ -134,11 +134,13 @@ def user_categories(username):
     return categories
 
 
-@bp_notes.route("/notes/<username>/<category_name>")
+@bp_notes.route("/<username>/<category_name>")
 def filter_cat(username, category_name):
     user_ = current_user
     category_name = category_name.lower()
     notes = []
+    edit_form = NoteForm()
+    delete_form = DeleteNoteForm()
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed,
                                                                                      session.get("rand_key")):
         rand_key = session.get("rand_key")
@@ -150,7 +152,7 @@ def filter_cat(username, category_name):
                 for note in notes_:
                     note.decrypt(rand_key)
                     notes.append(note)
-        return render_template("notes.html.j2", notes=notes)
+        return render_template("notes.html.j2", notes=notes, edit_form=edit_form, delete_form=delete_form)
     else:
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
@@ -158,7 +160,7 @@ def filter_cat(username, category_name):
                     Note.categories.any(Category.name == category_name)).all():
                 notes.append(note)
 
-            return render_template("notes.html.j2", notes=notes)
+            return render_template("notes_public.html.j2", notes=notes)
         else:
             abort(404)
     return render_template("notes.html.j2")
