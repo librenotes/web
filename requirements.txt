@@ -1,8 +1,10 @@
 asn1crypto==0.24.0
+blinker==1.4
 cffi==1.11.5
 click==6.7
 Flask==1.0.1
 Flask-Cache==0.13.1
+Flask-DebugToolbar==0.10.1
 Flask-Login==0.4.1
 Flask-Markdown==0.3
 flask-now==0.1.5

@@ -4,6 +4,7 @@ from .config import Config as conf
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flaskext.markdown import Markdown
 from werkzeug.security import generate_password_hash
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.config.from_object(conf)
@@ -11,6 +12,7 @@ Markdown(app)
 login_manager = LoginManager()
 login_manager.init_app(app=app)
 db = SQLAlchemy(app)
+toolbar = DebugToolbarExtension(app)
 
 from project.blueprints.login.controller import bp_login as login_module
 from project.blueprints.register.controller import bp_register as register_module
@@ -50,7 +52,7 @@ def logout():
 
 @app.route("/")
 def index():
-    return render_template("index.html.j2")
+    return render_template("index_nex.html.j2")
 
 
 @app.route("/dbc")
