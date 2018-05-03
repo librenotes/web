@@ -2,13 +2,13 @@ from flask import Flask, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config as conf
 from flask_login import LoginManager, login_required, logout_user, login_user
-from flaskext.markdown import Markdown
 from werkzeug.security import generate_password_hash
 # from flask_debugtoolbar import DebugToolbarExtension
+import bleach
+import markdown2
 
 app = Flask(__name__)
 app.config.from_object(conf)
-Markdown(app)
 login_manager = LoginManager()
 login_manager.init_app(app=app)
 db = SQLAlchemy(app)
@@ -28,6 +28,21 @@ from .models import User
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter_by(id=user_id).first()
+
+
+@app.template_filter('clean')
+def clean(s):
+    return bleach.clean(s)
+
+
+@app.template_filter('mymarkdown')
+def clean(s):
+    return markdown2.markdown(s)
+
+
+@app.template_filter('linkify')
+def linkify(s):
+    return bleach.linkify(s)
 
 
 @app.errorhandler(403)
