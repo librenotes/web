@@ -92,7 +92,6 @@ class Note(db.Model):
 
         note_.isprivate = self.isprivate
         note_.user = self.user
-        Category.query.filter_by()
         for category in self.categories:
             note_.categories.append(category.decrypt(rand_key))
 
@@ -108,12 +107,13 @@ class Note(db.Model):
 
 
 class NoteRepresenter(object):
-    id = 0
-    title = ""
-    content = ""
-    isprivate = True
-    user = User
-    categories = []
+    def __init__(self):
+        self.id = 0
+        self.title = ""
+        self.content = ""
+        self.isprivate = True
+        self.user = User
+        self.categories = []
 
 
 class Category(db.Model):

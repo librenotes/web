@@ -29,8 +29,10 @@
                     {% endif %}
                     <br>
                     <h4 class="text-center" id="t{{ note.id }}">{{ note.title }}</h4>
-                    <span id="b{{ note.id }}" value="{{ note.content }}">{{ note.content|markdown }}</span>
+                    <span id="b{{ note.id }}" hidden>{{ note.content | e}}</span>
+                    <span>{{ note.content|markdown }}</span>
                     <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
+                    <span id="c{{ note.id }}">{{ note.categories | join(' #') | trim | e}}</span>
                     <ul class="delete-edit-button" style="float:right;">
                         <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
                                data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
@@ -66,14 +68,15 @@
             let button = $(event.relatedTarget)
             let id = button.data('whatever')
             let title = document.getElementById("t" + id).innerHTML;
-            let body = document.getElementById("b" + id).getAttribute("value");
+            let body = document.getElementById("b" + id).innerHTML;
             let privacy = document.getElementById("p" + id).getAttribute("value");
+            let categories = document.getElementById("c" + id).innerHTML;
             let modal = $(this);
             modal.find('#edit-title').val(title);
             modal.find('#edit-note').val(body);
             modal.find('#edit-id').val(id);
 
-            modal.find('#edit-category').val("category");
+            modal.find('#edit-category').val(categories);
             if (privacy === "True") {
                 modal.find('#edit-privacy-toggle').addClass("active");
                 modal.find('#edit-isprivate').prop('checked', true);

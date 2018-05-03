@@ -40,13 +40,19 @@ def edit_note():
     # print(type(form.isprivate.data))
     note = Note.query.filter_by(user=user_, id=form.id.data).first()
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
-        note.decrypt(session.get("rand_key"))
         note.title = form.title.data
         note.content = form.content.data
         note.isprivate = form.isprivate.data
+        note.categories = []
         for category_name in split(r' ?#', form.categories.data.lower()):
-            n_category = Category(name=category_name, isprivate=note.isprivate)
-            note.categories.append(n_category)
+            if category_name is not '':
+                if note.isprivate:
+                    category = Category(name=category_name, isprivate=note.isprivate)
+                else:
+                    category = Category.query.filter_by(name=category_name).first()
+                    if category is None:
+                        category = Category(name=category_name, isprivate=note.isprivate)
+                note.categories.append(category)
         note.encrypt(session.get("rand_key"))
         db.session.commit()
         return str(200)
@@ -65,8 +71,14 @@ def add_note():
 
         note.isprivate = form.isprivate.data
         for category_name in split(r' ?#', form.categories.data.lower()):
-            n_category = Category(name=category_name, isprivate=note.isprivate)
-            note.categories.append(n_category)
+            if category_name is not '':
+                if note.isprivate:
+                    category = Category(name=category_name, isprivate=note.isprivate)
+                else:
+                    category = Category.query.filter_by(name=category_name).first()
+                    if category is None:
+                        category = Category(name=category_name, isprivate=note.isprivate)
+                note.categories.append(category)
         note.encrypt(session.get("rand_key"))
         db.session.add(note)
         user_.notes.append(note)
