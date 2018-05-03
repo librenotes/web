@@ -36,7 +36,6 @@
                                data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
                         <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
                                data-whatever="{{ note.id }}"><span class="far fa-2x fa-trash-alt"></span></a></li>
-
                     </ul>
                 </div>
             </div>
@@ -73,6 +72,7 @@
             modal.find('#edit-title').val(title);
             modal.find('#edit-note').val(body);
             modal.find('#edit-id').val(id);
+
             modal.find('#edit-category').val("category");
             if (privacy === "True") {
                 modal.find('#edit-privacy-toggle').addClass("active");

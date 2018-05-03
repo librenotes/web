@@ -18,8 +18,8 @@ def notes(username):
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed,
                                                                                      session.get("rand_key")):
         for note in Note.query.filter_by(user=user_).all():
-            note.decrypt(session.get("rand_key"))
-            notes.append(note)
+            note_ = note.decrypt(session.get("rand_key"))
+            notes.append(note_)
         return render_template("notes.html.j2", notes=notes, edit_form=edit_form, delete_form=delete_form)
     else:
         searched_user = User.query.filter_by(username=username).first()
@@ -36,15 +36,17 @@ def notes(username):
 def edit_note():
     form = NoteForm(request.form)
     user_ = current_user
-    print(form.content.data)
-    print(type(form.isprivate.data))
+    # print(form.content.data)
+    # print(type(form.isprivate.data))
     note = Note.query.filter_by(user=user_, id=form.id.data).first()
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
         note.decrypt(session.get("rand_key"))
         note.title = form.title.data
         note.content = form.content.data
-        note.categories = form.categories.data
         note.isprivate = form.isprivate.data
+        for category_name in split(r' ?#', form.categories.data.lower()):
+            n_category = Category(name=category_name, isprivate=note.isprivate)
+            note.categories.append(n_category)
         note.encrypt(session.get("rand_key"))
         db.session.commit()
         return str(200)
@@ -60,8 +62,11 @@ def add_note():
         note = Note()
         note.title = form.title.data
         note.content = form.content.data
-        note.categories = form.categories.data
+
         note.isprivate = form.isprivate.data
+        for category_name in split(r' ?#', form.categories.data.lower()):
+            n_category = Category(name=category_name, isprivate=note.isprivate)
+            note.categories.append(n_category)
         note.encrypt(session.get("rand_key"))
         db.session.add(note)
         user_.notes.append(note)
@@ -76,6 +81,7 @@ def delete_note():
     form = DeleteNoteForm(request.form)
     user_ = current_user
     note = Note.query.filter_by(user=user_, id=form.id.data).first()
+    print(form.id.data)
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
         db.session.delete(note)
         db.session.commit()
@@ -124,8 +130,8 @@ def user_categories(username):
                                                                                      session.get("rand_key")):
         rand_key = session.get("rand_key")
         for category in user_.categories:
-            category.decrypt(rand_key)
-            categories.append(category)
+            category_name = category.decrypt(rand_key)
+            categories.append(category_name)
     else:
         searched_user = User.query.filter_by(username=username)
         if searched_user:
@@ -138,29 +144,30 @@ def user_categories(username):
 def filter_cat(username, category_name):
     user_ = current_user
     category_name = category_name.lower()
-    notes = []
     edit_form = NoteForm()
     delete_form = DeleteNoteForm()
+    notes = []
+
     if user_.is_authenticated and user_.username == username and check_password_hash(user_.random_hashed,
                                                                                      session.get("rand_key")):
         rand_key = session.get("rand_key")
         for category in user_.categories.all():
-            category.decrypt(rand_key)
-            if category.name == category_name:
+            decrypted_name = category.decrypt(rand_key)
+            if decrypted_name == category_name:
                 notes_ = Note.query.filter_by(user=user_).filter(
                     Note.categories.any(Category.id == category.id)).all()
                 for note in notes_:
-                    note.decrypt(rand_key)
-                    notes.append(note)
+                    note_ = note.decrypt(rand_key)
+                    notes.append(note_)
         return render_template("notes.html.j2", notes=notes, edit_form=edit_form, delete_form=delete_form)
+
     else:
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
             for note in Note.query.filter_by(isprivate=False, user=searched_user).filter(
                     Note.categories.any(Category.name == category_name)).all():
                 notes.append(note)
-
             return render_template("notes_public.html.j2", notes=notes)
+
         else:
             abort(404)
-    return render_template("notes.html.j2")

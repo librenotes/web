@@ -24,7 +24,7 @@ class User(db.Model):
     random_encrypted = db.Column(db.Text, nullable=False)
     notes = db.relationship('Note')
     categories = db.relationship('Category', secondary=category_user,
-                                 lazy='dynamic', backref=db.backref('users', lazy='dynamic'))
+                                 lazy='joined', backref=db.backref('users', lazy='joined'))
 
     def __init__(self): pass
 
@@ -77,15 +77,26 @@ class Note(db.Model):
     user = db.relationship('User')
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     categories = db.relationship('Category', secondary=category_note,
-                                 lazy='dynamic', backref=db.backref('notes', lazy='dynamic'))
+                                 lazy='joined', backref=db.backref('notes', lazy='joined'))
 
     def decrypt(self, rand_key):
         cipher = AESCipher(rand_key)
+        note_ = NoteRepresenter()
+        note_.id = self.id
         if self.isprivate:
-            self.title = cipher.decrypt(self.title).decode("utf-8")
-            self.content = cipher.decrypt(self.content).decode("utf-8")
-            for category in self.categories:
-                category.decrypt(rand_key)
+            note_.title = cipher.decrypt(self.title).decode("utf-8")
+            note_.content = cipher.decrypt(self.content).decode("utf-8")
+        else:
+            note_.title = self.title
+            note_.content = self.content
+
+        note_.isprivate = self.isprivate
+        note_.user = self.user
+        Category.query.filter_by()
+        for category in self.categories:
+            note_.categories.append(category.decrypt(rand_key))
+
+        return note_
 
     def encrypt(self, rand_key):
         cipher = AESCipher(rand_key)
@@ -94,6 +105,15 @@ class Note(db.Model):
             self.content = cipher.encrypt(self.content)
             for category in self.categories:
                 category.encrypt(rand_key)
+
+
+class NoteRepresenter(object):
+    id = 0
+    title = ""
+    content = ""
+    isprivate = True
+    user = User
+    categories = []
 
 
 class Category(db.Model):
@@ -109,11 +129,11 @@ class Category(db.Model):
         return self
 
     def decrypt(self, rand_key):
-        cipher = AESCipher(rand_key)
         if self.isprivate:
-            print(self.isprivate)
-            self.name = cipher.decrypt(self.name)
-        return self
+            cipher = AESCipher(rand_key)
+            return cipher.decrypt(self.name)
+        else:
+            return self.name
 
     def __repr__(self):
         return "Category(id={}, name={}, isprivate={}".format(self.id, self.name, self.isprivate)
