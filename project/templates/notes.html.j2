@@ -9,7 +9,7 @@
 
 
 {% block content %}
-        {{ macro.flash() }}
+    {{ macro.flash() }}
     <div class="notes" style="padding-top:20px;">
 
         {% for note in notes %}
@@ -27,87 +27,94 @@
                     {% endif %}
                     <br>
                     <h4 class="text-center" id="t{{ note.id }}">{{ note.title|e }}</h4>
-                    <span id="b{{ note.id }}" hidden>{{ note.content|e}}</span>
-                    <pre>{{ note.content|e|linkify|markdown}}</pre>
+                    <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
+                    <pre>{{ note.content|e|linkify|markdown }}</pre>
                     <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
-                    <span id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e}}</span>
-                    <ul class="delete-edit-button" style="float:right;">
-                        <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
-                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
-                        <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
-                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-trash-alt"></span></a></li>
-                    </ul>
+                    <span id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e }}</span>
+                    {% if edit_form is not none %}
+                        <ul class="delete-edit-button" style="float:right;">
+                            <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
+                                   data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
+                            <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
+                                   data-whatever="{{ note.id }}"><span class="far fa-2x fa-trash-alt"></span></a></li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
     </div>
-    <a href="#createModal" data-toggle="modal">
-        <button class="big-add show-add-note"><span class="fas fa-pencil-alt"></span></button>
-    </a>
+    {% if edit_form is not none %}
+        <a href="#createModal" data-toggle="modal">
+            <button class="big-add show-add-note"><span class="fas fa-pencil-alt"></span></button>
+        </a>
+    {% endif %}
 
-
 {% endblock %}
-{% block createmodal %}
-    {{ macro.createmodal(edit_form) }}
-{% endblock %}
-{% block editmodel %}
-    {{ macro.editmodal(edit_form) }}
-{% endblock %}
-{% block deletemodal %}
-    {{ macro.deletemodal(delete_form) }}
-{% endblock %}
+{% if edit_form is not none %}
+    {% block createmodal %}
+        {{ macro.createmodal(edit_form) }}
+    {% endblock %}
+    {% block editmodel %}
+        {{ macro.editmodal(edit_form) }}
+    {% endblock %}
+    {% block deletemodal %}
+        {{ macro.deletemodal(delete_form) }}
+    {% endblock %}
+{% endif %}
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.1/isotope.pkgd.js'></script>
+    {% if edit_form is not none %}
+        <script type="text/javascript">
 
-    <script type="text/javascript">
 
+            $('#editModal').on('show.bs.modal', function (event) {
 
-         $('#editModal').on('show.bs.modal', function (event) {
+                function unescapeHtml(safe) {
+                    return safe.replace(/&amp;/g, '&')
+                        .replace(/&lt;/g, '<')
+                        .replace(/&gt;/g, '>')
+                        .replace(/&quot;/g, '"')
+                        .replace(/&#039;/g, "'");
+                }
 
-            function unescapeHtml(safe) {
-                return safe.replace(/&amp;/g, '&')
-                    .replace(/&lt;/g, '<')
-                    .replace(/&gt;/g, '>')
-                    .replace(/&quot;/g, '"')
-                    .replace(/&#039;/g, "'");
-            }
+                let button = $(event.relatedTarget)
+                let id = button.data('whatever')
+                let title = document.getElementById("t" + id).innerHTML;
+                let body = document.getElementById("b" + id).innerHTML;
+                let privacy = document.getElementById("p" + id).getAttribute("value");
+                let categories = document.getElementById("c" + id).innerHTML;
+                let modal = $(this);
+                modal.find('#edit-title').val(unescapeHtml(title));
+                modal.find('#edit-note').val(unescapeHtml(body));
+                modal.find('#edit-id').val(id);
 
-            let button = $(event.relatedTarget)
-            let id = button.data('whatever')
-            let title = document.getElementById("t" + id).innerHTML;
-            let body = document.getElementById("b" + id).innerHTML;
-            let privacy = document.getElementById("p" + id).getAttribute("value");
-            let categories = document.getElementById("c" + id).innerHTML;
-            let modal = $(this);
-            modal.find('#edit-title').val(unescapeHtml(title));
-            modal.find('#edit-note').val(unescapeHtml(body));
-            modal.find('#edit-id').val(id);
+                modal.find('#edit-category').val(unescapeHtml(categories));
+                if (privacy === "True") {
+                    modal.find('#edit-privacy-toggle').addClass("active");
+                    modal.find('#edit-isprivate').prop('checked', true);
 
-            modal.find('#edit-category').val(unescapeHtml(categories));
-            if (privacy === "True") {
-                modal.find('#edit-privacy-toggle').addClass("active");
-                modal.find('#edit-isprivate').prop('checked', true);
+                }
+                else {
+                    modal.find('#edit-privacy-toggle').removeClass("active");
+                    modal.find('#edit-isprivate').prop('checked', false);
 
-            }
-            else {
-                modal.find('#edit-privacy-toggle').removeClass("active");
-                modal.find('#edit-isprivate').prop('checked', false);
-
-            }
-            modal.find('#edit-privacy-toggle').click(function () {
-                var checked = modal.find('#edit-isprivate').prop('checked');
-                modal.find('#edit-isprivate').prop('checked', !checked);
+                }
+                modal.find('#edit-privacy-toggle').click(function () {
+                    var checked = modal.find('#edit-isprivate').prop('checked');
+                    modal.find('#edit-isprivate').prop('checked', !checked);
+                });
             });
-        });
-    </script>
-    <script type="text/javascript">
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            let button = $(event.relatedTarget);
-            let id = button.data('whatever');
-            let modal = $(this);
-            modal.find('#delete-id').val(id);
-        });
-    </script>
+        </script>
+        <script type="text/javascript">
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget);
+                let id = button.data('whatever');
+                let modal = $(this);
+                modal.find('#delete-id').val(id);
+            });
+        </script>
+    {% endif %}
 {% endblock %}
+

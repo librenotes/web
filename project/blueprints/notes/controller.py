@@ -9,6 +9,7 @@ from re import split
 bp_notes = Blueprint('app_notes', __name__, url_prefix='/notes')
 
 
+@bp_notes.route("/<username>/")
 @bp_notes.route("/<username>")
 def notes(username):
     edit_form = NoteForm()
@@ -25,8 +26,10 @@ def notes(username):
         searched_user = User.query.filter_by(username=username).first()
         if searched_user is not None:
             flash("You are seeing public notes of {}".format(searched_user.username), "warning")
-            notes = Note.query.filter_by(user=searched_user, isprivate=False).all()
-            return render_template("notes_public.html.j2", notes=notes)
+            for note in Note.query.filter_by(user=searched_user, isprivate=False).all():
+                note_ = note.decrypt(session.get("rand_key"))
+                notes.append(note_)
+            return render_template("notes.html.j2", notes=notes, edit_form=None, delete_form=None)
 
     abort(404)
 
@@ -178,8 +181,9 @@ def filter_cat(username, category_name):
         if searched_user is not None:
             for note in Note.query.filter_by(isprivate=False, user=searched_user).filter(
                     Note.categories.any(Category.name == category_name)).all():
-                notes.append(note)
-            return render_template("notes_public.html.j2", notes=notes)
+                note_ = note.decrypt(session.get("rand_key"))
+                notes.append(note_)
+            return render_template("notes.html.j2", notes=notes, edit_form=None, delete_form=None)
 
         else:
             abort(404)
