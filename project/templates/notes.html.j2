@@ -26,11 +26,11 @@
                         </div>
                     {% endif %}
                     <br>
-                    <h4 class="text-center" id="t{{ note.id }}">{{ note.title| clean }}</h4>
-                    <span id="b{{ note.id }}" hidden>{{ note.content | e}}</span>
-                    <span>{{ note.content|clean|mymarkdown|linkify|safe}}</span>
+                    <h4 class="text-center" id="t{{ note.id }}">{{ note.title|e }}</h4>
+                    <span id="b{{ note.id }}" hidden>{{ note.content|e}}</span>
+                    <pre>{{ note.content|e|linkify|markdown}}</pre>
                     <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
-                    <span id="c{{ note.id }}">{{ note.categories | join(' #') | trim | e}}</span>
+                    <span id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e}}</span>
                     <ul class="delete-edit-button" style="float:right;">
                         <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
                                data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
@@ -85,7 +85,7 @@
             modal.find('#edit-note').val(unescapeHtml(body));
             modal.find('#edit-id').val(id);
 
-            modal.find('#edit-category').val(categories);
+            modal.find('#edit-category').val(unescapeHtml(categories));
             if (privacy === "True") {
                 modal.find('#edit-privacy-toggle').addClass("active");
                 modal.find('#edit-isprivate').prop('checked', true);

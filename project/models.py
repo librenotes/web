@@ -131,7 +131,7 @@ class Category(db.Model):
     def decrypt(self, rand_key):
         if self.isprivate:
             cipher = AESCipher(rand_key)
-            return cipher.decrypt(self.name)
+            return cipher.decrypt(self.name).decode("utf-8")
         else:
             return self.name
 

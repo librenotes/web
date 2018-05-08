@@ -30,12 +30,7 @@ def load_user(user_id):
     return User.query.filter_by(id=user_id).first()
 
 
-@app.template_filter('clean')
-def clean(s):
-    return bleach.clean(s)
-
-
-@app.template_filter('mymarkdown')
+@app.template_filter('markdown')
 def clean(s):
     return markdown2.markdown(s)
 
