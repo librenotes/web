@@ -10,38 +10,65 @@
 
 {% block content %}
     {{ macro.flash() }}
-    <div class="notes" style="padding-top:20px;">
+    <div class="row">
+        <div class="col-md-2" style="padding-top: 50px;">
 
-        {% for note in notes %}
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search Your Categories"
+                   title="Type in a name">
 
-            <div class="note">
-                <div class="note-inner">
-                    {% if note.isprivate %}
-                        <div class="box-icon" style="background-color:green;">
-                            <span class="fas fa-2x fa-lock"></span>
+            <ul id="myUL">
+                <li><a href="#">Adele</a></li>
+                <li><a href="#">Agnes</a></li>
+
+                <li><a href="#">Billy</a></li>
+                <li><a href="#">Bob</a></li>
+
+                <li><a href="#">Calvin</a></li>
+                <li><a href="#">Christina</a></li>
+                <li><a href="#">Cindy</a></li>
+            </ul>
+
+        </div>
+        <div class="col-md-10">
+            <div class="notes" style="padding-top:20px;" id="all_notes">
+
+                {% for note in notes %}
+
+                    <div class="note">
+                        <div class="note-inner">
+                            {% if note.isprivate %}
+                                <div class="box-icon" style="background-color:green;">
+                                    <span class="fas fa-2x fa-lock"></span>
+                                </div>
+                            {% else %}
+                                <div class="box-icon" style="background-color:red;">
+                                    <span class="fas fa-2x fa-unlock"></span>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <h4 class="text-center title" id="t{{ note.id }}">{{ note.title|e }}</h4>
+                            <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
+                            <span class="content"
+                                  style="white-space: pre-wrap;">{{ note.content|e|linkify|markdown }}</span>
+                            <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
+                            <span class="categories"
+                                  id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e }}</span>
+                            {% if edit_form is not none %}
+                                <ul class="delete-edit-button" style="float:right;">
+                                    <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
+                                           data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a>
+                                    </li>
+                                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
+                                           data-whatever="{{ note.id }}"><span
+                                            class="far fa-2x fa-trash-alt"></span></a>
+                                    </li>
+                                </ul>
+                            {% endif %}
                         </div>
-                    {% else %}
-                        <div class="box-icon" style="background-color:red;">
-                            <span class="fas fa-2x fa-unlock"></span>
-                        </div>
-                    {% endif %}
-                    <br>
-                    <h4 class="text-center" id="t{{ note.id }}">{{ note.title|e }}</h4>
-                    <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
-                    <pre>{{ note.content|e|linkify|markdown }}</pre>
-                    <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
-                    <span id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e }}</span>
-                    {% if edit_form is not none %}
-                        <ul class="delete-edit-button" style="float:right;">
-                            <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
-                                   data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a></li>
-                            <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
-                                   data-whatever="{{ note.id }}"><span class="far fa-2x fa-trash-alt"></span></a></li>
-                        </ul>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
     {% if edit_form is not none %}
         <a href="#createModal" data-toggle="modal">
@@ -108,13 +135,22 @@
             });
         </script>
         <script type="text/javascript">
-            $('#deleteModal').on('show.bs.modal', function (event) {
-                let button = $(event.relatedTarget);
-                let id = button.data('whatever');
-                let modal = $(this);
-                modal.find('#delete-id').val(id);
-            });
+
+            function textFilter() {
+                var input = document.getElementById("myInput");
+                var filter = input.value;
+                var content = $(this).find('span.content').text();
+                var categories = $(this).find('span.categories').text();
+                var titles = $(this).find('h4.title').text();
+                console.log(content);
+                return content.indexOf(filter) > -1 || categories.indexOf(filter) > -1 || titles.indexOf(filter) > -1;
+            }
+
+            function myFunction() {
+                $('#all_notes').isotope({filter: textFilter});
+            }
         </script>
+
     {% endif %}
 {% endblock %}
 
