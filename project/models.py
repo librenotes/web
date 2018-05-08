@@ -2,6 +2,7 @@ from project import db
 from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .cipher import AESCipher
 from os import urandom
+from sqlalchemy import func
 
 category_note = db.Table('Category_Note',
                          db.Column('category_id', db.Integer, db.ForeignKey('Category.id')),
@@ -78,6 +79,7 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     categories = db.relationship('Category', secondary=category_note,
                                  lazy='joined', backref=db.backref('notes', lazy='joined'))
+    updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     def decrypt(self, rand_key):
         cipher = AESCipher(rand_key)
@@ -104,6 +106,12 @@ class Note(db.Model):
             self.content = cipher.encrypt(self.content)
             for category in self.categories:
                 category.encrypt(rand_key)
+
+
+@db.event.listens_for(Note.categories, 'remove')
+@db.event.listens_for(Note.categories, 'append')
+def updated_on(target, value, initiator):
+    target.updated_on = func.now()
 
 
 class NoteRepresenter(object):
