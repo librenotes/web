@@ -89,7 +89,7 @@ def add_note():
         db.session.add(note)
         user_.notes.append(note)
         db.session.commit()
-        return redirect(url_for('notes', username=user_.username))
+        return redirect(url_for('app_notes.notes', username=user_.username))
     return str(500)
 
 
@@ -103,7 +103,7 @@ def delete_note():
     if note and check_password_hash(user_.random_hashed, session.get("rand_key")):
         db.session.delete(note)
         db.session.commit()
-        return redirect(url_for('notes', username=user_.username))
+        return redirect(url_for('app_notes.notes', username=user_.username))
     return str(500)
 
 
