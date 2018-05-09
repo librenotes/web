@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .config import Config as conf
 from flask_login import LoginManager, login_required, logout_user, login_user
 from werkzeug.security import generate_password_hash
-# from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 import bleach
 import markdown2
 
@@ -12,7 +12,7 @@ app.config.from_object(conf)
 login_manager = LoginManager()
 login_manager.init_app(app=app)
 db = SQLAlchemy(app)
-# toolbar = DebugToolbarExtension(app)
+toolbar = DebugToolbarExtension(app)
 
 from project.blueprints.login.controller import bp_login as login_module
 from project.blueprints.register.controller import bp_register as register_module

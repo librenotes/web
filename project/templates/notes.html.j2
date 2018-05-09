@@ -51,7 +51,7 @@
                             <h4 class="text-center title" id="t{{ note.id }}">{{ note.title|e }}</h4>
                             <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
                             <span class="content"
-                                  style="white-space: pre-wrap;">{{ note.content|e|linkify|markdown }}</span>
+                                  style="white-space: pre-wrap;">{{ note.content|e|linkify}}</span>
                             <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
                             <span class="categories"
                                   id="c{{ note.id }}">#{{ note.categories | join(' #') | trim | e }}</span>
