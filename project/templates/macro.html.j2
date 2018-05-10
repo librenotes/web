@@ -12,83 +12,86 @@
 
 {% macro createmodal(form) -%}
     {% if form is not none %}
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Add new note</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{ url_for('app_notes.add_note') }}">
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModalLabel">Add new note</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ url_for('app_notes.add_note') }}">
 
-                        {{ form.csrf_token }}
-                        <div class="form-group">
-                            {{ form.id(class_="form-control", id="create-id") }}
-                        </div>
-                        <div class="form-group">
-                            <label for="note-title" class="col-form-label">Title:</label>
-                            {{ form.title(class_="form-control", placeholder="Title", id="create-title") }}
-                        </div>
-                        <div class="form-group">
-                            <label for="note-content" class="col-form-label">Note:</label>
-                            {{ form.content(class_="form-control", placeholder="Note") }}
-                        </div>
-                        <div class="form-group">
-                            <label for="note-categories" class="col-form-label">Category:</label>
-                            {{ form.categories(class_="form-control", placeholder="Category", id="create-category") }}
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-toggle" data-toggle="button" aria-pressed="false"
-                                    autocomplete="off">
-                                <div class="handle"></div>
-                            </button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
-                </div>
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                {{ form.id(class_="form-control", id="create-id") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="note-title" class="col-form-label">Title:</label>
+                                {{ form.title(class_="form-control", placeholder="Title", id="create-title") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="note-content" class="col-form-label">Note:</label>
+                                {{ form.content(class_="form-control", placeholder="Note") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="note-categories" class="col-form-label">Category:</label>
+                                {{ form.categories(class_="form-control", placeholder="Category", id="create-category") }}
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-toggle" data-toggle="button" aria-pressed="false"
+                                        autocomplete="off" id="create-privacy-toggle">
+                                    <div class="handle"></div>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                {{ form.isprivate(id="create-isprivate", hidden="true") }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
     {% endif %}
 {%- endmacro %}
 {% macro deletemodal(form) %}
-{% if form is not none %}
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="post" action="{{ url_for('app_notes.delete_note') }}">
-                    {{ form.csrf_token }}
-                    <h5 class="modal-title" id="deleteModalLabel">Do you really want to delete this note?</h5>
-                    <div class="form-group">
-                        {{ form.id(class_="form-control", id="delete-id") }}
+    {% if form is not none %}
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                    <div class="modal-body">
+                        <form method="post" action="{{ url_for('app_notes.delete_note') }}">
+                            {{ form.csrf_token }}
+                            <h5 class="modal-title" id="deleteModalLabel">Do you really want to delete this note?</h5>
+                            <div class="form-group">
+                                {{ form.id(class_="form-control", id="delete-id") }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
 
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 {% endmacro %}
 {% macro editmodal(form) %}
     {% if form is not none %}

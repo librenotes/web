@@ -41,3 +41,11 @@ $('#deleteModal').on('show.bs.modal', function (event) {
     let modal = $(this);
     modal.find('#delete-id').val(id);
 });
+$('#createModal').on('show.bs.modal', function (event) {
+    let modal = $(this);
+    modal.find('#create-isprivate').prop('checked', false);
+    modal.find('#create-privacy-toggle').click(function () {
+        let checked = modal.find('#create-isprivate').prop('checked');
+        modal.find('#create-isprivate').prop('checked', !checked);
+    });
+});
