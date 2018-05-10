@@ -60,6 +60,13 @@ class User(db.Model, UserMixin):
     def __str__(self):
         return self.username
 
+    def encrypt_rand_key(self, plain_pass, rand_key):
+        hashed_pass = self.__get_hashed_pass(plain_pass)
+        cipher = AESCipher(hashed_pass)
+        random_encrypted = cipher.encrypt(rand_key)
+        self.random_encrypted = random_encrypted
+        self.random_hashed = generate_password_hash(rand_key)
+
 
 class Note(db.Model):
     __tablename__ = "Note"
