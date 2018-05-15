@@ -14,16 +14,28 @@
 </head>
 <body>
 {% block navbar %}
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Libre Notes</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="#">Features</a>
-            <a class="p-2 text-dark" href="#">Enterprise</a>
-            <a class="p-2 text-dark" href="#">Support</a>
-            <a class="p-2 text-dark" href="#">Pricing</a>
+    {% if current_user.is_authenticated %}
+        <nav class="navbar static-top navbar-light bg-white border-bottom box-shadow flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 ">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Librenotes</a>
+            <form class="form-inline" style="text-align: center; display: block;">
+                <input class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search">
+            </form>
+            <ul class="nav justify-content-center">
+                <a class="p-2 text-dark" href="#">Account</a>
+                <a class="p-2 text-dark" href="{{ url_for('logout') }}">Logout</a>
+            </ul>
         </nav>
-        <a class="btn btn-outline-primary" href="#">Sign up</a>
-    </div>
+
+    {% else %}
+        <nav class="navbar static-top navbar-light bg-white border-bottom box-shadow flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 ">
+            <h5 class="my-0 mr-md-auto font-weight-normal">Librenotes</h5>
+            <ul class="nav justify-content-center">
+                <a class="p-2 text-dark" href="{{ url_for('app_login.login_get') }}">Login</a>
+                <a class="p-2 text-dark" href="{{ url_for('app_register.register_get') }}">Register</a>
+            </ul>
+        </nav>
+    {% endif %}
+
 {% endblock %}
 {% block content %}
 {% endblock %}
