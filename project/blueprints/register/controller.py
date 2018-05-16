@@ -34,11 +34,11 @@ def register_post():
             db.session.commit()
             # Login new user
             login_user(user)
-            AuthHelper.set_random_key(user, form.password.data)
+            AuthHelper.set_random_key(user.get_random_key(form.password.data))
             Flasher.flash("Register Successful, now you are logged in!", "success")
             return redirect(url_for('app_notes.notes', username=user.username))
         else:
-            Flasher.flash_errors("This username or email address is already in use", "warning")
+            Flasher.flash("This username or email address is already in use", "warning")
     else:
         Flasher.flash_errors(form, "danger")
     return redirect(url_for('app_register.register_get'))

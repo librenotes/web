@@ -13,7 +13,6 @@ bp_notes = Blueprint('app_notes', __name__, url_prefix='/notes')
 @bp_notes.route("/<username>/")
 @bp_notes.route("/<username>")
 def notes(username):
-
     if AuthHelper.check_authentication(current_user) and AuthHelper.check_username(current_user, username) \
             and AuthHelper.check_session_validation(current_user):
         note_list = NoteHelper.get_user_notes(current_user)
