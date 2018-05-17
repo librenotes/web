@@ -1,14 +1,14 @@
 from project.models import Note, User, Category
-from flask import session, flash
+from flask import session, flash, render_template
 from werkzeug.security import check_password_hash
 from re import split
-
+from flask_mail import Message
+from project import mail, MailConfirmer
 
 class NoteHelper:
     @staticmethod
     def get_user_notes(user_):
         notes = []
-
         for note in Note.query.filter_by(user=user_).order_by(Note.updated_on.desc()).all():
             note_ = note.decrypt(AuthHelper.get_random_key())
             notes.append(note_)
@@ -53,9 +53,6 @@ class CategoryHelper:
 
 
 class AuthHelper:
-    @staticmethod
-    def check_form_validation(form):
-        return form.validate()
 
     @staticmethod
     def check_session_validation(user_):
@@ -68,13 +65,6 @@ class AuthHelper:
     @staticmethod
     def get_random_key():
         return session.get("rand_key")
-
-    @staticmethod
-    def check_authentication(user_):
-        if user_.is_authenticated:
-            return True
-        else:
-            return False
 
     @staticmethod
     def check_username(user_, username):
@@ -109,3 +99,12 @@ class Flasher:
     @staticmethod
     def flash(text_to_be_flashed, category):
         flash(text_to_be_flashed, category)
+
+
+class Mailer:
+    @staticmethod
+    def send_confirmation_mail(username, reciepent):
+        token = MailConfirmer.generate_confirmation_token(reciepent)
+        msg = Message(recipients=[reciepent])
+        msg.html = render_template("confirmation_mail.html.j2", username=username, token=token)
+        mail.send(msg)

@@ -9,7 +9,7 @@ bp_login = Blueprint('app_login', __name__, url_prefix='/login')
 
 @bp_login.route("/", methods=["GET"])
 def login_get():
-    if AuthHelper.check_authentication(current_user):
+    if current_user.is_authenticated:
         Flasher.flash("You are already logged in", "success")
         return redirect(url_for('app_notes.notes', username=current_user.username))
     else:

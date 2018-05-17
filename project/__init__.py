@@ -6,13 +6,38 @@ from werkzeug.security import generate_password_hash
 from flask_debugtoolbar import DebugToolbarExtension
 import bleach
 import markdown2
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(conf)
 login_manager = LoginManager()
 login_manager.init_app(app=app)
 db = SQLAlchemy(app)
+mail = Mail(app)
 # toolbar = DebugToolbarExtension(app)
+
+
+class MailConfirmer:
+
+    @staticmethod
+    def generate_confirmation_token(email):
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+    @staticmethod
+    def confirm_token(token, expiration=3600):
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        try:
+            email = serializer.loads(
+                token,
+                salt=app.config['SECURITY_PASSWORD_SALT'],
+                max_age=expiration
+            )
+        except:
+            return False
+        return email
+
 
 from project.blueprints.login.controller import bp_login as login_module
 from project.blueprints.register.controller import bp_register as register_module

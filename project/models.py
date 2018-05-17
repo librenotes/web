@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .cipher import AESCipher
 from os import urandom
 from sqlalchemy import func
+from flask_login import UserMixin
 
 category_note = db.Table('Category_Note',
                          db.Column('category_id', db.Integer, db.ForeignKey('Category.id')),
@@ -14,7 +15,7 @@ category_user = db.Table('Category_User',
                          db.Column('user_id', db.Integer, db.ForeignKey('User.id')))
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique=True, nullable=False)
@@ -26,6 +27,7 @@ class User(db.Model):
     notes = db.relationship('Note')
     categories = db.relationship('Category', secondary=category_user,
                                  lazy='joined', backref=db.backref('users', lazy='joined'))
+    is_confirmed = db.Column(db.Boolean, default=False)
 
     def __init__(self): pass
 
@@ -52,18 +54,6 @@ class User(db.Model):
         random_encrypted = cipher.encrypt(rand_key)
         self.random_encrypted = random_encrypted
         self.random_hashed = generate_password_hash(rand_key)
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
 
     def __str__(self):
         return self.username

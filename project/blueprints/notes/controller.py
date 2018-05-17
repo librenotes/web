@@ -13,7 +13,7 @@ bp_notes = Blueprint('app_notes', __name__, url_prefix='/notes')
 @bp_notes.route("/<username>/")
 @bp_notes.route("/<username>")
 def notes(username):
-    if AuthHelper.check_authentication(current_user) and AuthHelper.check_username(current_user, username) \
+    if current_user.is_authenticated and AuthHelper.check_username(current_user, username) \
             and AuthHelper.check_session_validation(current_user):
         note_list = NoteHelper.get_user_notes(current_user)
         return render_template("notes.html.j2", notes=note_list, edit_form=NoteForm(), delete_form=DeleteNoteForm())
@@ -31,7 +31,7 @@ def notes(username):
 def edit_note():
     form = NoteForm(request.form)
     note = NoteHelper.get_user_note_with_id(current_user, form.id.data)
-    if note and AuthHelper.check_form_validation(form) and AuthHelper.check_session_validation(current_user):
+    if note and form.validate() and AuthHelper.check_session_validation(current_user):
         # Update note
         note.title = form.title.data
         note.content = form.content.data
@@ -55,7 +55,7 @@ def edit_note():
 @login_required
 def add_note():
     form = NoteForm(request.form)
-    if AuthHelper.check_session_validation(current_user) and AuthHelper.check_form_validation(form):
+    if AuthHelper.check_session_validation(current_user) and form.validate():
         # Create new note
         note = Note()
         note.title = form.title.data
