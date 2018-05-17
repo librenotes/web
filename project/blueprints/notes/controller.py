@@ -5,7 +5,7 @@ from .forms import NoteForm, DeleteNoteForm
 from project.models import User, Note, Category
 # from werkzeug.security import check_password_hash
 # from re import split
-from project.blueprints import NoteHelper, AuthHelper, CategoryHelper
+from project.helpers import NoteHelper, AuthHelper, CategoryHelper
 
 bp_notes = Blueprint('app_notes', __name__, url_prefix='/notes')
 
@@ -19,7 +19,7 @@ def notes(username):
         return render_template("notes.html.j2", notes=note_list, edit_form=NoteForm(), delete_form=DeleteNoteForm())
     else:
         note_list = NoteHelper.get_searched_user_notes(username)
-        if notes:
+        if note_list:
             flash("You are seeing public notes of {}".format(username), "warning")
             return render_template("notes.html.j2", notes=note_list, edit_form=None, delete_form=None)
         else:

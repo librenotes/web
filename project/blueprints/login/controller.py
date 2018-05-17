@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, Blueprint
 from project.models import User
 from .forms import LoginForm
 from flask_login import current_user, login_user
-from project.blueprints import Flasher, AuthHelper
+from project.helpers import Flasher, AuthHelper
 
 bp_login = Blueprint('app_login', __name__, url_prefix='/login')
 

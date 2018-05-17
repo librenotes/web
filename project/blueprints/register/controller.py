@@ -1,10 +1,10 @@
-from project import db, MailConfirmer
+from project import db, mailer
 from flask import render_template, redirect, url_for, request, Blueprint
 from project.models import User
 from .forms import RegisterForm
 from werkzeug.security import generate_password_hash
-from flask_login import login_user, current_user
-from project.blueprints import Flasher, AuthHelper, Mailer
+from flask_login import current_user
+from project.helpers import Flasher, AuthHelper
 
 bp_register = Blueprint('app_register', __name__, url_prefix='/register')
 
@@ -29,11 +29,9 @@ def register_post():
             user.password = generate_password_hash(form.password.data)
             user.email = form.email.data
             user.generate_encryption_keys(form.password.data)
-            # Add to db
             db.session.add(user)
             db.session.commit()
-            # Login new user
-            Mailer.send_confirmation_mail(form.username.data, form.email.data)
+            mailer.send_confirmation_mail(form.username.data, form.email.data)
             Flasher.flash("Register Successful, please check your mail address for confirmation", "success")
             return redirect(url_for('app_notes.notes', username=user.username))
         else:
@@ -45,9 +43,8 @@ def register_post():
 
 @bp_register.route("/confirm", methods=["GET"])
 def confirm():
-    confirmed = MailConfirmer.confirm_token(request.args['token'])
+    confirmed = mailer.confirm_token(request.args['token'])
     if confirmed:
-
         return confirmed
     else:
         return str(False)

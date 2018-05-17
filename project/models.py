@@ -1,9 +1,11 @@
-from project import db
 from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .cipher import AESCipher
 from os import urandom
 from sqlalchemy import func
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 category_note = db.Table('Category_Note',
                          db.Column('category_id', db.Integer, db.ForeignKey('Category.id')),
