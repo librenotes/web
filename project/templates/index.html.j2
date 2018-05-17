@@ -1,47 +1,50 @@
 {% extends "base.html.j2" %}
+{% import "macro.html.j2" as messageflash %}
 
 {% block styles %}
-  {{ super() }}
-
-  <!-- Custom styles for this template -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block content %}
 
-<div class="container" style="max-width:90% !important;">
-  <div class="row">
-    <div class="col-lg-5 col-sm-7">
-				<div class="header">
-          <h1><span style="font-size: 34px; font-weight: nhttps://bootstrapmade.com/demo/Butterfly/ormalq;">WE RESPECT YOUR</span> PRIVACY!</h1>
-          <h2>LIBRENOTES</h2>
-          <h3>We handle your notes and really don't give a <span style="font-size: 47px; color: red ;">F*!@</span> where you stayed yesterday night.</h3>
+    <div class="container" style="max-width:90% !important;">
+        {{ messageflash.flash() }}
+
+        <div class="row">
+            <div class="col-lg-5 col-sm-7">
+                <div class="header">
+                    <h1><span style="font-size: 34px; font-weight: nhttps://bootstrapmade.com/demo/Butterfly/ormalq;">WE RESPECT YOUR</span>
+                        PRIVACY!</h1>
+                    <h2>LIBRENOTES</h2>
+                    <h3>We handle your notes and really don't give a <span
+                            style="font-size: 47px; color: red ;">F*!@</span> where you stayed yesterday night.</h3>
+                </div>
+                <div class="row" style="padding-top: 75px; padding-left: 120px;">
+                    <div class="col-lg-10">
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Login</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Register</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-sm-5">
+                <div class="progpos" style="padding-left:25%;">
+                    <div class="donatorlog">
+                        <p style="font-weight:bold;">Donations</p>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                            <p style="font-size: 25px; padding-top:15px;">%40</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row" style="padding-top: 75px; padding-left: 120px;">
-          <div class="col-lg-10">
-            <button type="button" class="btn btn-primary btn-lg btn-block">Login</button>
-            <button type="button" class="btn btn-primary btn-lg btn-block">Register</button>
-          </div>
-	      </div>
-      </div>
-    <div class="col-lg-7 col-sm-5">
-      <div class="progpos" style="padding-left:25%;">
-        <div class="donatorlog">
-          <p style="font-weight:bold;">Donations</p>
-        </div>
-        <div class="progress">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-          <p style="font-size: 25px; padding-top:15px;">%40</p>
-        </div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
 
 {% endblock %}
 
 {% block scripts %}
-  {{ super() }}
+    {{ super() }}
 {% endblock %}
