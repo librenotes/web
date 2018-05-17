@@ -10,11 +10,11 @@
 
 function textFilter() {
     var input = document.getElementById("myInput");
-    var filter = input.value;
-    var content = $(this).find('span.content').text();
-    var categories = $(this).find('span.categories').text();
-    var titles = $(this).find('h4.title').text();
-    console.log(content);
+    var filter = input.value.toLowerCase();
+    var content = $(this).find('span.content').text().toLowerCase();
+    var categories = $(this).find('span.categories').text().toLowerCase();
+    var titles = $(this).find('h4.title').text().toLowerCase();
+    // console.log(content);
     return content.indexOf(filter) > -1 || categories.indexOf(filter) > -1 || titles.indexOf(filter) > -1;
 }
 
