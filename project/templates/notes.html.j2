@@ -10,62 +10,63 @@
 {% block content %}
     {{ macro.flash() }}
     <div class="container" style="max-width: 100%;">
-    <div class="row">
-        <div class="col-md-2" style="padding-top: 50px;">
-            <h5 class="text-success" style="text-align: center;">Your categories</h5>
-            <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
-                    Cras justo odio
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
-                    Dapibus ac facilisis in
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
-                    Morbi leo risus
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-10">
-            <div class="notes" style="padding-top:20px;" id="all_notes">
+        <div class="row">
+            <div class="col-md-2" style="padding-top: 50px;">
+                <h5 class="text-success" style="text-align: center;">Your categories</h5>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
+                        Cras justo odio
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
+                        Morbi leo risus
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <div class="notes" style="padding-top:20px;" id="all_notes">
 
-                {% for note in notes %}
+                    {% for note in notes %}
 
-                    <div class="note">
-                        <div class="note-inner">
-                            {% if note.isprivate %}
-                                <div class="box-icon" style="background-color:green;">
-                                    <span class="fas fa-2x fa-lock"></span>
-                                </div>
-                            {% else %}
-                                <div class="box-icon" style="background-color:red;">
-                                    <span class="fas fa-2x fa-unlock"></span>
-                                </div>
-                            {% endif %}
-                            <br>
-                            <h4 class="text-center title" id="t{{ note.id }}">{{ note.title|e }}</h4>
-                            <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
-                            <span class="content"
-                                  style="white-space: pre-wrap;">{{ note.content|e|linkify }}</span>
-                            <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
-                            <span class="categories"
-                                  id="c{{ note.id }}">{{ note.categories | join(' #') | trim | e }}</span>
-                            {% if edit_form is not none %}
-                                <ul class="delete-edit-button" style="float:right;">
-                                    <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
-                                           data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a>
-                                    </li>
-                                    <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
-                                           data-whatever="{{ note.id }}"><span
-                                            class="far fa-2x fa-trash-alt"></span></a>
-                                    </li>
-                                </ul>
-                            {% endif %}
+                        <div class="note">
+                            <div class="note-inner">
+                                {% if note.isprivate %}
+                                    <div class="box-icon" style="background-color:green;">
+                                        <span class="fas fa-2x fa-lock"></span>
+                                    </div>
+                                {% else %}
+                                    <div class="box-icon" style="background-color:red;">
+                                        <span class="fas fa-2x fa-unlock"></span>
+                                    </div>
+                                {% endif %}
+                                <br>
+                                <h4 class="text-center title" id="t{{ note.id }}">{{ note.title|e }}</h4>
+                                <span id="b{{ note.id }}" hidden>{{ note.content|e }}</span>
+                                <span class="content"
+                                      style="white-space: pre-wrap;">{{ note.content|e|linkify }}</span>
+                                <br>
+                                <span value="{{ note.isprivate }}" id="p{{ note.id }}" hidden></span>
+                                <span class="categories"
+                                      id="c{{ note.id }}">{{ note.categories | join(' #') | trim | e }}</span>
+                                {% if edit_form is not none %}
+                                    <ul class="delete-edit-button" style="float:right;">
+                                        <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
+                                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a>
+                                        </li>
+                                        <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
+                                               data-whatever="{{ note.id }}"><span
+                                                class="far fa-2x fa-trash-alt"></span></a>
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
     </div>
     {% if edit_form is not none %}
         <a href="#createModal" data-toggle="modal">

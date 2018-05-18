@@ -44,7 +44,7 @@ class CategoryHelper:
         return splitted_list
 
     @staticmethod
-    def get_new_categories(splitted_list, prifvacy):
+    def get_new_categories(splitted_list, privacy):
         categories = []
         for category_name in splitted_list:
             category = Category(name=category_name, isprivate=privacy)
