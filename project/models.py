@@ -1,7 +1,11 @@
-from project import db
 from werkzeug.security import generate_password_hash, pbkdf2_bin
 from .cipher import AESCipher
 from os import urandom
+from sqlalchemy import func
+from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 category_note = db.Table('Category_Note',
                          db.Column('category_id', db.Integer, db.ForeignKey('Category.id')),
@@ -13,7 +17,7 @@ category_user = db.Table('Category_User',
                          db.Column('user_id', db.Integer, db.ForeignKey('User.id')))
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique=True, nullable=False)
@@ -25,6 +29,7 @@ class User(db.Model):
     notes = db.relationship('Note')
     categories = db.relationship('Category', secondary=category_user,
                                  lazy='joined', backref=db.backref('users', lazy='joined'))
+    is_confirmed = db.Column(db.Boolean, default=False)
 
     def __init__(self): pass
 
@@ -52,18 +57,6 @@ class User(db.Model):
         self.random_encrypted = random_encrypted
         self.random_hashed = generate_password_hash(rand_key)
 
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
     def __str__(self):
         return self.username
 
@@ -78,6 +71,7 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     categories = db.relationship('Category', secondary=category_note,
                                  lazy='joined', backref=db.backref('notes', lazy='joined'))
+    updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     def decrypt(self, rand_key):
         cipher = AESCipher(rand_key)
@@ -106,6 +100,12 @@ class Note(db.Model):
                 category.encrypt(rand_key)
 
 
+@db.event.listens_for(Note.categories, 'remove')
+@db.event.listens_for(Note.categories, 'append')
+def updated_on(target, value, initiator):
+    target.updated_on = func.now()
+
+
 class NoteRepresenter(object):
     def __init__(self):
         self.id = 0
@@ -131,7 +131,7 @@ class Category(db.Model):
     def decrypt(self, rand_key):
         if self.isprivate:
             cipher = AESCipher(rand_key)
-            return cipher.decrypt(self.name)
+            return cipher.decrypt(self.name).decode("utf-8")
         else:
             return self.name
 

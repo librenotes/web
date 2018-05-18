@@ -7,15 +7,15 @@
 {% endblock %}
 
 {% block content %}
+
     <form class="form-signin" method="post" action="{{ url_for('app_login.login_post') }}">
         <h1 class="h3 mb-3 font-weight-normal text-center">Login</h1>
         {{ messageflash.flash() }}
-
         {{ form.csrf_token }}
         <label for="inputUsername" class="sr-only">Username</label>
         {{ form.username(class_="form-control", placeholder="username") }}
         <label for="inputPassword" class="sr-only">Password</label>
-        {{ form.password(class_="form-control", placeholder="password") }}
+        {{ form.password(class_="form-control", placeholder="password", style="margin-bottom:10px;") }}
         <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
     </form>
 {% endblock %}
