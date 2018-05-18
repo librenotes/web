@@ -52,7 +52,7 @@ def logout():
 
 @app.route("/")
 def index():
-    return render_template("index_nex.html.j2")
+    return render_template("index.html.j2")
 
 
 @app.route("/dbc")
