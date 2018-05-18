@@ -22,9 +22,13 @@ def login_post():
     if form.validate():
         user_ = User.query.filter_by(username=form.username.data).first()
         if user_ and AuthHelper.check_password(user_, form.password.data):
-            login_user(user_)
-            AuthHelper.set_random_key(user_.get_random_key(form.password.data))
-            Flasher.flash("Login Successful!", category="success")
+            if not user_.is_confirmed:
+                Flasher.flash("Did you confirm your email adress?", "danger")
+                return redirect(url_for("app_login.login_get"))
+            else:
+                login_user(user_)
+                AuthHelper.set_random_key(user_.get_random_key(form.password.data))
+                Flasher.flash("Login Successful! Welcome back, {}".format(user_.username), category="success")
             return redirect(url_for('app_notes.notes', username=form.username.data))
         else:
             Flasher.flash("Password or Username does not match", "danger")

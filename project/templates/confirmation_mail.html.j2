@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-
-<h2 style="text-align: center;">Welcome to Librenotes, {{ username }}</h2>
-
-Please click following link for verification of your account
-<a href="0.0.0.0{{ url_for('app_register.confirm') }}?token={{ token }}">LINK</a>
+<div style="background-color: whitesmoke;">
+    <div style="padding: 15px;">
+        <h2 style="text-align: center;">{{ username }}, welcome to Librenotes! </h2>
+        <a style="color:#3E7087;" href="http://0.0.0.0:5000{{ url_for('app_register.confirm') }}?token={{ token }}">Just one more step to freedom...</a>
+        <p>Librenotes Team</p>
+    </div>
+</div>
+<h5 style="text-align: center; color:#3E7087;">Librenotes, designed and coded in Urla for the love of freedom and
+    privacy...</h5>
 </body>
 </html>

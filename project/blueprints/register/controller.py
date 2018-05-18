@@ -29,11 +29,12 @@ def register_post():
             user.password = generate_password_hash(form.password.data)
             user.email = form.email.data
             user.generate_encryption_keys(form.password.data)
+            # Add to db
             db.session.add(user)
             db.session.commit()
             mailer.send_confirmation_mail(form.username.data, form.email.data)
             Flasher.flash("Register Successful, please check your mail address for confirmation", "success")
-            return redirect(url_for('app_notes.notes', username=user.username))
+            return redirect(url_for('app_login.login_get'))
         else:
             Flasher.flash("This username or email address is already in use", "warning")
     else:
@@ -45,6 +46,13 @@ def register_post():
 def confirm():
     confirmed = mailer.confirm_token(request.args['token'])
     if confirmed:
-        return confirmed
+        user_ = User.query.filter(User.email == confirmed).first()
+        if user_.is_confirmed:
+            Flasher.flash("This mail address has been already verified!", "warning")
+        else:
+            user_.is_confirmed = True
+            db.session.commit()
+            Flasher.flash("Email verification is successful, now you can login!", "success")
+        return redirect(url_for('app_login.login_get'))
     else:
-        return str(False)
+        return "Expired or you are fake"

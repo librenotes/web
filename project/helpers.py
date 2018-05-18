@@ -44,7 +44,7 @@ class CategoryHelper:
         return splitted_list
 
     @staticmethod
-    def get_new_categories(splitted_list, privacy):
+    def get_new_categories(splitted_list, prifvacy):
         categories = []
         for category_name in splitted_list:
             category = Category(name=category_name, isprivate=privacy)
@@ -109,6 +109,7 @@ class Mailer:
         token = self.generate_confirmation_token(recipient)
         msg = Message(recipients=[recipient])
         msg.html = render_template("confirmation_mail.html.j2", username=username, token=token)
+        msg.subject = "Validate Your Account"
         self.mail.send(msg)
 
     def generate_confirmation_token(self, email):
