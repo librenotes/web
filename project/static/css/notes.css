@@ -38,7 +38,7 @@ body {
 }
 
 .box-icon {
-    background-color: #bdbdbd;
+    background-color: #e8e8d3;
     border-radius: 50%;
     display: table;
     height: 100px;
@@ -47,11 +47,13 @@ body {
     margin-top: -65px;
 }
 
-.box-icon span {
+.box-icon #lockicon{
     color: #fff;
-    /*display: table-cell;*/
+    display: table-cell;
     text-align: center;
     vertical-align: middle;
+    margin-top: 20px;
+    margin-left: 35px;
 }
 
 .note-inner {
@@ -74,7 +76,7 @@ body {
 }
 
 .big-add {
-    background-color: #F44336;
+    background-color: #e8e8d3;
     color: #fff;
     padding: 0;
     border-radius: 50%;

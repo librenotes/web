@@ -33,12 +33,12 @@
                         <div class="note">
                             <div class="note-inner">
                                 {% if note.isprivate %}
-                                    <div class="box-icon" style="background-color:green;">
-                                        <img src="{{ url_for('static', filename='img/144-lock.png') }}" alt="locked-icon">
+                                    <div class="box-icon">
+                                        <img id="lockicon" src="{{ url_for('static', filename='img/144-lock.png') }}" alt="locked-icon">
                                     </div>
                                 {% else %}
-                                    <div class="box-icon" style="background-color:red;">
-                                        <img src="{{ url_for('static', filename='img/145-unlocked.png') }}" alt="unlocked-icon">
+                                    <div class="box-icon">
+                                        <img id="lockicon" src="{{ url_for('static', filename='img/145-unlocked.png') }}" alt="unlocked-icon">
                                     </div>
                                 {% endif %}
                                 <br>
@@ -53,11 +53,12 @@
                                 {% if edit_form is not none %}
                                     <ul class="delete-edit-button" style="float:right;">
                                         <li><a style="color:#343a40;" href="#editModal" data-toggle="modal"
-                                               data-whatever="{{ note.id }}"><span class="far fa-2x fa-edit"></span></a>
+                                               data-whatever="{{ note.id }}"><img id="editicon" src="{{ url_for('static', filename='img/007-pencil2.png') }}" alt="locked-icon">
+ </a>
                                         </li>
                                         <li><a style="color:#343a40;" href="#deleteModal" data-toggle="modal"
-                                               data-whatever="{{ note.id }}"><span
-                                                class="far fa-2x fa-trash-alt"></span></a>
+                                               data-whatever="{{ note.id }}"><img id="editicon" src="{{ url_for('static', filename='img/174-bin2.png') }}" alt="locked-icon">
+ </a>
                                         </li>
                                     </ul>
                                 {% endif %}
@@ -70,7 +71,7 @@
     </div>
     {% if edit_form is not none %}
         <a href="#createModal" data-toggle="modal">
-            <button class="big-add show-add-note"><img src="{{ url_for('static', filename='img/006-pencil.png') }}" alt="pencil-icon"></button>
+        <button class="big-add show-add-note"><img src="{{ url_for('static', filename='img/008-quill.png') }}" alt="pencil-icon"></button>
         </a>
     {% endif %}
 
