@@ -25,7 +25,7 @@ def create_app(config):
     # Registers
     register_blueprints(app)
     register_error_handlers(app)
-    register_base_routes(app)
+    # register_base_routes(app)
     register_template_filters(app)
     register_login_manager_handlers(app)
     return app
@@ -35,9 +35,11 @@ def register_blueprints(app):
     from project.blueprints.login.controller import bp_login as login_module
     from project.blueprints.register.controller import bp_register as register_module
     from project.blueprints.notes.controller import bp_notes as notes_module
+    from project.blueprints.index.controller import bp_index as index_module
     app.register_blueprint(login_module)
     app.register_blueprint(register_module)
     app.register_blueprint(notes_module)
+    app.register_blueprint(index_module)
 
 
 def register_login_manager_handlers(app):

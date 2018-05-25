@@ -144,3 +144,11 @@ class Category(db.Model):
 
     def __repr__(self):
         return "Category(id={}, name={}, isprivate={}".format(self.id, self.name, self.isprivate)
+
+
+class ContactMessage(db.Model):
+    __tablename__ = "ContactMessage"
+    id = db.Column(db.Integer, primary_key=True)
+    sender_name = db.Column(db.Text, nullable=False)
+    sender_mail = db.Column(db.Text, nullable=False)
+    message = db.Column(db.Text, nullable=False)

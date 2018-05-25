@@ -16,7 +16,7 @@
 <body>
 {% block navbar %}
     <nav class="navbar static-top navbar-light bg-white border-bottom box-shadow flex-column flex-md-row align-items-center p-3 px-md-4">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Librenotes</a>
+        <a class="navbar-brand" href="{{ url_for('app_index.index') }}">Librenotes</a>
 
     {% if current_user.is_authenticated %}
             <form class="form-inline" style="text-align: center; display: block;">
@@ -24,7 +24,7 @@
             </form>
             <ul class="nav justify-content-center">
                 <a class="p-2 text-dark" href="#">Account</a>
-                <a class="p-2 text-dark" href="{{ url_for('logout') }}">Logout</a>
+                <a class="p-2 text-dark" href="{{ url_for('app_index.logout') }}">Logout</a>
             </ul>
         </nav>
 

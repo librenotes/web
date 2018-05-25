@@ -57,11 +57,10 @@
         {{ messageflash.flash() }}
     <!-- Start: Header -->
     <div class="row hero-header" id="home">
-        <div class="col-md-7 col-xs-12"">
+        <div class="col-md-7 col-xs-12">
             <!-- <img src="static/img/meetup-logo.png" class="logo"> -->
             <h1 style="font-size: 55px; color: yellow;">Librenotes</h1>
-{#            <h2 style="color: white;">We respect your <span style="font-size: 50px; color: #6699ff;">PRIVACY!</span>#}
-            </h2>
+{#            <h2 style="color: white;">We respect your <span style="font-size: 50px; color: #6699ff;">PRIVACY!</span></h2>#}
             <h3 style="color: white;">We handle your notes and really don't give a <span
                     style="font-size: 47px; color: #6699ff ;">F*!@</span>
                 where you stayed yesterday night.</h3>
@@ -183,11 +182,12 @@
     <div class="row contact">
         <div class="col-md-6 contact-form">
             <h3 class="content-ct"><span class="ti-email"></span> Contact Form</h3>
-            <form class="form-horizontal " data-toggle="validator" role="form">
+            <form class="form-horizontal " data-toggle="validator" role="form" method="post" action="{{ url_for('app_index.contact') }}">
+                {{ form.csrf_token }}
                 <div class="form-group">
                     <label for="name" class="col-sm-3 control-label">Name<sup>*</sup></label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" placeholder="John Doe" required>
+                        {{ form.name(class_="form-control", placeholder="John Doe", id="name", required="required") }}
                         <div class="help-block with-errors pull-right"></div>
                         <span class="form-control-feedback" aria-hidden="true"></span>
                     </div>
@@ -195,7 +195,7 @@
                 <div class="form-group">
                     <label for="email" class="col-sm-3 control-label">Email<sup>*</sup></label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control" id="email" placeholder="you@youremail.com" required>
+                        {{ form.email(class_="form-control", placeholder="you@youremail.com", id="email", required="required") }}
                         <div class="help-block with-errors pull-right"></div>
                         <span class="form-control-feedback" aria-hidden="true"></span>
                     </div>
@@ -203,7 +203,7 @@
                 <div class="form-group">
                     <label for="message" class="col-sm-3 control-label">Your Message<sup>*</sup></label>
                     <div class="col-sm-9">
-                        <textarea id="message" class="form-control" rows="3" required></textarea>
+                        {{ form.message(class_="form-control", rows="3", id="message", required="required") }}
                         <div class="help-block with-errors pull-right"></div>
                         <span class="form-control-feedback" aria-hidden="true"></span>
                     </div>
