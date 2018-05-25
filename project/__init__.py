@@ -6,11 +6,13 @@ from .helpers import Mailer, Flasher
 from .models import User, db
 import bleach
 import markdown2
+from flask_cache import Cache
 
 login_manager = LoginManager()
 
 mail = Mail()
 mailer = Mailer()
+cache = Cache()
 
 
 def create_app(config):
@@ -22,6 +24,7 @@ def create_app(config):
     mail.init_app(app)
     login_manager.init_app(app)
     mailer.init_app(app, mail)
+    # cache.init_app(app)
     # Registers
     register_blueprints(app)
     register_error_handlers(app)

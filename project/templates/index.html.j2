@@ -22,225 +22,232 @@
 </head> -->
 
 {% block content %}
-{#  <nav class="side-menu">#}
-{#    <ul>#}
-{#        <li class="hidden">#}
-{#            <a class="page-scroll" href="#page-top"></a>#}
-{#        </li>#}
-{#        <li>#}
-{#            <a href="#home" class="page-scroll">#}
-{#                <span class="menu-title">Home</span>#}
-{#                <span class="dot"></span>#}
-{#            </a>#}
-{#        </li>#}
-{#        <li>#}
-{#            <a href="#speakers" class="page-scroll">#}
-{#                <span class="menu-title">Speakers</span>#}
-{#                <span class="dot"></span>#}
-{#            </a>#}
-{#        </li>#}
-{#        <li>#}
-{#            <a href="#tickets" class="page-scroll">#}
-{#                <span class="menu-title">Buy Tickets</span>#}
-{#                <span class="dot"></span>#}
-{#            </a>#}
-{#        </li>#}
-{#        <li>#}
-{#            <a href="#schedule" class="page-scroll">#}
-{#                <span class="menu-title">Schedule</span>#}
-{#                <span class="dot"></span>#}
-{#            </a>#}
-{#        </li>#}
-{#    </ul>#}
-{#</nav>#}
-<div class="container-fluid">
+    {#  <nav class="side-menu">#}
+    {#    <ul>#}
+    {#        <li class="hidden">#}
+    {#            <a class="page-scroll" href="#page-top"></a>#}
+    {#        </li>#}
+    {#        <li>#}
+    {#            <a href="#home" class="page-scroll">#}
+    {#                <span class="menu-title">Home</span>#}
+    {#                <span class="dot"></span>#}
+    {#            </a>#}
+    {#        </li>#}
+    {#        <li>#}
+    {#            <a href="#speakers" class="page-scroll">#}
+    {#                <span class="menu-title">Speakers</span>#}
+    {#                <span class="dot"></span>#}
+    {#            </a>#}
+    {#        </li>#}
+    {#        <li>#}
+    {#            <a href="#tickets" class="page-scroll">#}
+    {#                <span class="menu-title">Buy Tickets</span>#}
+    {#                <span class="dot"></span>#}
+    {#            </a>#}
+    {#        </li>#}
+    {#        <li>#}
+    {#            <a href="#schedule" class="page-scroll">#}
+    {#                <span class="menu-title">Schedule</span>#}
+    {#                <span class="dot"></span>#}
+    {#            </a>#}
+    {#        </li>#}
+    {#    </ul>#}
+    {#</nav>#}
+    <div class="container-fluid">
         {{ messageflash.flash() }}
-    <!-- Start: Header -->
-    <div class="row hero-header" id="home">
-        <div class="col-md-7 col-xs-12">
-            <!-- <img src="static/img/meetup-logo.png" class="logo"> -->
-            <h1 style="font-size: 55px; color: yellow;">Librenotes</h1>
-{#            <h2 style="color: white;">We respect your <span style="font-size: 50px; color: #6699ff;">PRIVACY!</span></h2>#}
-            <h3 style="color: white;">We handle your notes and really don't give a <span
-                    style="font-size: 47px; color: #6699ff ;">F*!@</span>
-                where you stayed yesterday night.</h3>
-        </div>
-        <div class="col-md-5 d-none d-md-block">
-            <img src="{{ url_for('static', filename='img/book.png') }}" alt="book-background" class="rocket">
-            <img style="padding-left: 25%; padding-top: 10%" src="{{ url_for('static', filename='img/pencil.png') }}" alt="pencil-foreground"
-                 class="animated bounce">
-            <!-- <img src="static/img/animated.png" class="rocket animated bounce"> -->
-        </div>
-    </div>
-    <!-- End: Header -->
-</div>
-<div class="container">
-    <!-- Start: Desc -->
-    <div class="row me-row content-ct icon text-center">
-        <div class="col text-center">
-            <h2>Why Librenotes?</h2>
-        </div>
-    </div>
-    <div class="row me-row content-ct icon">
-        <div class="col-md-4 feature">
-        <img style="padding-left: 20px;" src="{{ url_for('static', filename='img/144-lock-index.png') }}" alt="lockimg">
-            <h3>Secure</h3>
-            <p>We keep your note that much encrypted even we can't decrypt it. See how actually it works -link-</p>
-        </div>
-        <div class="col-md-4 feature">
-	    <img src="{{ url_for('static', filename='img/304-infinite.png') }}" alt="free-img">
-            <h3>Free</h3>
-            <p>Librenote itself is under GPLv3 and it's software modules have GPL compatible licenses.U can check all
-                third party libraries in librenotes -link-</p>
-        </div>
-        <div class="col-md-4 feature">
-	    <img src="{{ url_for('static', filename='img/087-display.png') }}" alt="desktop-img">
-	    <img src="{{ url_for('static', filename='img/089-mobile.png') }}" alt="mobile-img">
-
-            <h3>Cross Platform</h3>
-            <p>We are trying to implement Librenotes on every platform of course with you helps -linkdonate -</p>
-        </div>
-    </div>
-</div>
-<!-- End: Desc -->
-<div class="container">
-    <!-- Start: Desc -->
-    <div class="row me-row content-ct">
-        <div class="col text-center">
-            <h2 class="row-title">Donation Bar</h2>
-            <div class="feature">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
-                        75%
-                    </div>
-
-                </div>
+        <!-- Start: Header -->
+        <div class="row hero-header" id="home">
+            <div class="col-md-7 col-xs-12">
+                <!-- <img src="static/img/meetup-logo.png" class="logo"> -->
+                <h1 style="font-size: 55px; color: yellow;">Librenotes</h1>
+                {#            <h2 style="color: white;">We respect your <span style="font-size: 50px; color: #6699ff;">PRIVACY!</span></h2>#}
+                <h3 style="color: white;">We handle your notes and really don't give a <span
+                        style="font-size: 47px; color: #6699ff ;">F*!@</span>
+                    where you stayed yesterday night.</h3>
+            </div>
+            <div class="col-md-5 d-none d-md-block">
+                <img src="{{ url_for('static', filename='img/book.png') }}" alt="book-background" class="rocket">
+                <img style="padding-left: 25%; padding-top: 10%"
+                     src="{{ url_for('static', filename='img/pencil.png') }}" alt="pencil-foreground"
+                     class="animated bounce">
+                <!-- <img src="static/img/animated.png" class="rocket animated bounce"> -->
             </div>
         </div>
-        <!-- add ul to list latest donators  -->
+        <!-- End: Header -->
+    </div>
+    <div class="container">
+        <!-- Start: Desc -->
+        <div class="row me-row content-ct icon text-center">
+            <div class="col text-center">
+                <h2>Why Librenotes?</h2>
+            </div>
+        </div>
+        <div class="row me-row content-ct icon">
+            <div class="col-md-4 feature">
+                <img style="padding-left: 20px;" src="{{ url_for('static', filename='img/144-lock-index.png') }}"
+                     alt="lockimg">
+                <h3>Secure</h3>
+                <p>We keep your note that much encrypted even we can't decrypt it. See how actually it works -link-</p>
+            </div>
+            <div class="col-md-4 feature">
+                <img src="{{ url_for('static', filename='img/304-infinite.png') }}" alt="free-img">
+                <h3>Free</h3>
+                <p>Librenote itself is under GPLv3 and it's software modules have GPL compatible licenses.U can check
+                    all
+                    third party libraries in librenotes -link-</p>
+            </div>
+            <div class="col-md-4 feature">
+                <img src="{{ url_for('static', filename='img/087-display.png') }}" alt="desktop-img">
+                <img src="{{ url_for('static', filename='img/089-mobile.png') }}" alt="mobile-img">
+
+                <h3>Cross Platform</h3>
+                <p>We are trying to implement Librenotes on every platform of course with you helps -linkdonate -</p>
+            </div>
+        </div>
     </div>
     <!-- End: Desc -->
-</div>
-
-<div class="container">
-    <!-- Start: Speakers -->
-    <h2 class="row-title" style="color: #660033">Meet With The Team</h2>
-    <div class="row me-row content-ct speaker" id="speakers">
-        <div class="col-md-4 col-sm-6 feature ">
-            <img src="https://avatars3.githubusercontent.com/u/14114739?s=400&v=4" class="speaker-img">
-            <h3 style="color: #660033">Ozan Onur TEK</h3>
-            <p>LoL</p>
-            <ul class="speaker-social">
-                <li><a href="https://github.com/ozanonurtek"><img src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"></a></li>
-            </ul>
-        </div>
-        <div class="col-md-4 col-sm-6 feature">
-            <img src="https://avatars3.githubusercontent.com/u/16005747?s=460&v=4" class="speaker-img">
-            <h3 style="color: #660033">Furkan ARICAN</h3>
-            <p>KeK</p>
-            <ul class="speaker-social">
-                <li><a href="https://github.com/vrct"><img src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"></a></li>
-                <li><a href="https://www.linkedin.com/in/furkan-arican-699951121/"><img src="{{ url_for('static', filename='img/458-linkedin.png') }}" alt="linkedin-icon"></a></li>
-            </ul>
-        </div>
-        <div class="col-md-4 col-sm-6 feature">
-            <img src="https://avatars0.githubusercontent.com/u/16193640?s=400&v=4" class="speaker-img">
-            <h3 style="color: #660033">Yigitcan OZKAN</h3>
-            <p>LuL</p>
-            <ul class="speaker-social">
-                <li><a href="https://github.com/shubidubapp"> <img src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"> </a></li>
-                <li><a href="https://twitter.com/Shubidubapp"><img src="{{ url_for('static', filename='img/407-twitter.png') }}" alt="twitter-icon"></a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<!-- Start: Tickets -->
-<div class="container">
-    <div class="container tickets" id="tickets">
-        <h2 style="color: white; padding-top: 2em;" class="row-title">Donate</h2>
+    <div class="container">
+        <!-- Start: Desc -->
         <div class="row me-row content-ct">
-            <div class="col-md-4 col-sm-6 offset-md-2">
-                <h3 style="color: white;">With <span><img style="height:30px; width:70px;"
-                                                          src="https://www.freepnglogos.com/uploads/paypal-logo-png-1.png"
-                                                          alt="paypal"></span></h3>
-                <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
+            <div class="col text-center">
+                <h2 class="row-title">Donation Bar</h2>
+                <div class="feature">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            75%
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <h3 style="color: white;">With <span><img style="height:32px; width:32px;"
-                                                          src="http://pngimg.com/uploads/bitcoin/bitcoin_PNG47.png"
-                                                          alt="bitcoin"></span></h3>
-                <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
+            <!-- add ul to list latest donators  -->
+        </div>
+        <!-- End: Desc -->
+    </div>
+
+    <div class="container">
+        <!-- Start: Speakers -->
+        <h2 class="row-title" style="color: #660033">Meet With The Team</h2>
+        <div class="row me-row content-ct speaker" id="speakers">
+            <div class="col-md-4 col-sm-6 feature ">
+                <img src="https://avatars3.githubusercontent.com/u/14114739?s=400&v=4" class="speaker-img">
+                <h3 style="color: #660033">Ozan Onur TEK</h3>
+                <p>LoL</p>
+                <ul class="speaker-social">
+                    <li><a href="https://github.com/ozanonurtek"><img
+                            src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"></a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-sm-6 feature">
+                <img src="https://avatars3.githubusercontent.com/u/16005747?s=460&v=4" class="speaker-img">
+                <h3 style="color: #660033">Furkan ARICAN</h3>
+                <p>KeK</p>
+                <ul class="speaker-social">
+                    <li><a href="https://github.com/vrct"><img
+                            src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"></a></li>
+                    <li><a href="https://www.linkedin.com/in/furkan-arican-699951121/"><img
+                            src="{{ url_for('static', filename='img/458-linkedin.png') }}" alt="linkedin-icon"></a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-sm-6 feature">
+                <img src="https://avatars0.githubusercontent.com/u/16193640?s=400&v=4" class="speaker-img">
+                <h3 style="color: #660033">Yigitcan OZKAN</h3>
+                <p>LuL</p>
+                <ul class="speaker-social">
+                    <li><a href="https://github.com/shubidubapp"> <img
+                            src="{{ url_for('static', filename='img/433-github.png') }}" alt="github-icon"> </a></li>
+                    <li><a href="https://twitter.com/Shubidubapp"><img
+                            src="{{ url_for('static', filename='img/407-twitter.png') }}" alt="twitter-icon"></a></li>
+                </ul>
             </div>
         </div>
     </div>
-</div>
-<!-- Start: Footer -->
-<div class="container-fluid footer">
-    <div class="row contact">
-        <div class="col-md-6 contact-form">
-            <h3 class="content-ct"><span class="ti-email"></span> Contact Form</h3>
-            <form class="form-horizontal " data-toggle="validator" role="form" method="post" action="{{ url_for('app_index.contact') }}">
-                {{ form.csrf_token }}
-                <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">Name<sup>*</sup></label>
-                    <div class="col-sm-9">
-                        {{ form.name(class_="form-control", placeholder="John Doe", id="name", required="required") }}
-                        <div class="help-block with-errors pull-right"></div>
-                        <span class="form-control-feedback" aria-hidden="true"></span>
-                    </div>
+
+
+    <!-- Start: Tickets -->
+    <div class="container">
+        <div class="container tickets" id="tickets">
+            <h2 style="color: white; padding-top: 2em;" class="row-title">Donate</h2>
+            <div class="row me-row content-ct">
+                <div class="col-md-4 col-sm-6 offset-md-2">
+                    <h3 style="color: white;">With <span><img style="height:30px; width:70px;"
+                                                              src="https://www.freepnglogos.com/uploads/paypal-logo-png-1.png"
+                                                              alt="paypal"></span></h3>
+                    <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
                 </div>
-                <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">Email<sup>*</sup></label>
-                    <div class="col-sm-9">
-                        {{ form.email(class_="form-control", placeholder="you@youremail.com", id="email", required="required") }}
-                        <div class="help-block with-errors pull-right"></div>
-                        <span class="form-control-feedback" aria-hidden="true"></span>
-                    </div>
+                <div class="col-md-4 col-sm-6">
+                    <h3 style="color: white;">With <span><img style="height:32px; width:32px;"
+                                                              src="http://pngimg.com/uploads/bitcoin/bitcoin_PNG47.png"
+                                                              alt="bitcoin"></span></h3>
+                    <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
                 </div>
-                <div class="form-group">
-                    <label for="message" class="col-sm-3 control-label">Your Message<sup>*</sup></label>
-                    <div class="col-sm-9">
-                        {{ form.message(class_="form-control", rows="3", id="message", required="required") }}
-                        <div class="help-block with-errors pull-right"></div>
-                        <span class="form-control-feedback" aria-hidden="true"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <button type="submit" id="submit" name="submit" class="btn btn-yellow pull-right">Send <span
-                                class="ti-arrow-right"></span></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-4 col-md-offset-1 content-ct">
-            <h3><span class="ti-twitter"></span> Github Feed</h3>
-{#            <p>Lorem <a href="#">#Ipsum</a> is a dummy text used as a text filler in designs. This is just a dummy text.#}
-{#                via <a href="#">@designerdada</a></p>#}
-{#            <hr>#}
-{#            <p>Lorem Ipsum is a <a href="#">#dummy</a> text used as a text filler in designs. This is just a dummy text.#}
-{#                via <a href="#">@designerdada</a></p>#}
-{#            <hr>#}
-{#            <p>Lorem Ipsum is a <a href="#">#dummy</a> text used as a text filler in designs. This is just a dummy text.#}
-{#                via <a href="#">@designerdada</a></p>#}
+            </div>
         </div>
     </div>
-    <div class="row footer-credit">
-        <div class="col-md-6 col-sm-6">
-{#            <p>&copy; 2017, <a href="http://www.designerdada.com">DesignerDada.com</a> | All rights reserved. | <a#}
-{#                    href="http://designerdada.com/meetup-free-responsive-bootstrap-template/">Download this template</a>#}
-{#            </p>#}
+    <!-- Start: Footer -->
+    <div class="container-fluid footer">
+        <div class="row contact">
+            <div class="col-md-6 contact-form">
+                <h3 class="content-ct"><span class="ti-email"></span> Contact Form</h3>
+                <form class="form-horizontal " data-toggle="validator" role="form" method="post"
+                      action="{{ url_for('app_index.contact') }}">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Name<sup>*</sup></label>
+                        <div class="col-sm-9">
+                            {{ form.name(class_="form-control", placeholder="John Doe", id="name", required="required") }}
+                            <div class="help-block with-errors pull-right"></div>
+                            <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label">Email<sup>*</sup></label>
+                        <div class="col-sm-9">
+                            {{ form.email(class_="form-control", placeholder="you@youremail.com", id="email", required="required") }}
+                            <div class="help-block with-errors pull-right"></div>
+                            <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="col-sm-3 control-label">Your Message<sup>*</sup></label>
+                        <div class="col-sm-9">
+                            {{ form.message(class_="form-control", rows="3", id="message", required="required") }}
+                            <div class="help-block with-errors pull-right"></div>
+                            <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" id="submit" name="submit" class="btn btn-yellow pull-right">Send <span
+                                    class="ti-arrow-right"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <h3><span class=""></span> Github Feed</h3>
+                <ul>
+
+                    {% for author, message, url in github_feed %}
+                        <li>{{ author.name }}: <a href="{{ url }}" target="_blank">{{ message }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div class="col-md-6 col-sm-6">
-            <ul class="footer-menu">
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms &amp; Condition</a></li>
-            </ul>
+        <div class="row footer-credit">
+            <div class="col-md-6 col-sm-6">
+                {#            <p>&copy; 2017, <a href="http://www.designerdada.com">DesignerDada.com</a> | All rights reserved. | <a#}
+                {#                    href="http://designerdada.com/meetup-free-responsive-bootstrap-template/">Download this template</a>#}
+                {#            </p>#}
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <ul class="footer-menu">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms &amp; Condition</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
