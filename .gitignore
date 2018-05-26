@@ -4,13 +4,11 @@ config.py
 # redis bulk files
 dump.rdb
 
-# static image files
-bolgesellig/static/img/*
-
 db
 # IDE related files
 .idea/
 .vscode/
+
 client_wish_list.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/

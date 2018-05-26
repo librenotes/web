@@ -30,7 +30,7 @@ def create_app(config):
     register_error_handlers(app)
     # register_base_routes(app)
     register_template_filters(app)
-    register_login_manager_handlers(app)
+    register_login_manager_handlers()
     return app
 
 
@@ -45,7 +45,7 @@ def register_blueprints(app):
     app.register_blueprint(index_module)
 
 
-def register_login_manager_handlers(app):
+def register_login_manager_handlers():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.filter_by(id=user_id).first()
@@ -54,15 +54,15 @@ def register_login_manager_handlers(app):
 def register_error_handlers(app):
     @app.errorhandler(403)
     def forbidden(e):
-        return redirect(url_for("index"))
+        return redirect(url_for("app_index.index"))
 
     @app.errorhandler(401)
     def unauthorized(e):
-        return redirect(url_for("index"))
+        return redirect(url_for("app_index.index"))
 
     @app.errorhandler(404)
     def not_found(e):
-        return redirect(url_for("index"))
+        return redirect(url_for("app_index.index"))
 
 
 def register_template_filters(app):
