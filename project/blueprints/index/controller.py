@@ -1,12 +1,11 @@
-from flask import render_template, redirect, url_for, request, Blueprint, session
+import requests
+from flask import render_template, redirect, url_for, request, Blueprint, session, json
 from project.models import User, ContactMessage
 from .forms import ContactForm
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash
 from project.helpers import Flasher
 from project import db, cache
-from github import Github
-from project.config import GITHUB_TOKEN
 
 bp_index = Blueprint('app_index', __name__)
 
@@ -59,12 +58,14 @@ def createdb():
     return "OK"
 
 
-@cache.memoize(timeout=600)
+@cache.memoize(timeout= 900)
 def get_commit_messages(count=15):
-    g = Github(login_or_token=GITHUB_TOKEN)
-    commits = g.get_repo('librenotes/web').get_commits()
     feed = []
-    for commit in commits[:count]:
-        author, message, url = commit.commit.author, commit.commit.message, commit.commit.html_url
+    content = requests.get("https://api.github.com/repos/librenotes/web/commits").content
+    content_json = json.loads(content)
+    for i in range(0, count):
+        message = content_json[i]["commit"]["message"]
+        author = content_json[i]["commit"]["committer"]["name"]
+        url = content_json[i]["commit"]["url"]
         feed.append((author, message, url))
     return feed
