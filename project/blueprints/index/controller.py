@@ -17,7 +17,7 @@ def logout():
     session.pop('rand_key')
     logout_user()
     Flasher.flash("You are successfully logged out!", "success")
-    return redirect(url_for("index"))
+    return redirect(url_for(".index"))
 
 
 @bp_index.route("/", methods=["GET"])

@@ -18,23 +18,23 @@
     <nav class="navbar static-top navbar-light bg-white border-bottom box-shadow flex-column flex-md-row align-items-center p-3 px-md-4">
         <a class="navbar-brand" href="{{ url_for('app_index.index') }}">Librenotes</a>
 
-    {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated %}
             <form class="form-inline" style="text-align: center; display: block;">
                 <input class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search">
             </form>
             <ul class="nav justify-content-center">
-                <a class="p-2 text-dark" href="#">Account</a>
+                <a class="p-2 text-dark" href="{{ url_for('app_account.change_pass_get') }}">Account</a>
                 <a class="p-2 text-dark" href="{{ url_for('app_index.logout') }}">Logout</a>
             </ul>
-        </nav>
+            </nav>
 
-    {% else %}
+        {% else %}
             <ul class="nav justify-content-center">
                 <a class="p-2 text-dark" href="{{ url_for('app_login.login_get') }}">Login</a>
                 <a class="p-2 text-dark" href="{{ url_for('app_register.register_get') }}">Register</a>
             </ul>
-    {% endif %}
-        </nav>
+        {% endif %}
+    </nav>
 
 {% endblock %}
 {% block content %}

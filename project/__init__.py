@@ -1,6 +1,5 @@
-from flask import Flask, render_template, session, redirect, url_for
-from flask_login import LoginManager, login_required, logout_user, login_user
-from werkzeug.security import generate_password_hash
+from flask import Flask, redirect, url_for
+from flask_login import LoginManager
 from flask_mail import Mail
 from .helpers import Mailer, Flasher
 from .models import User, db
@@ -39,10 +38,12 @@ def register_blueprints(app):
     from project.blueprints.register.controller import bp_register as register_module
     from project.blueprints.notes.controller import bp_notes as notes_module
     from project.blueprints.index.controller import bp_index as index_module
+    from project.blueprints.account.controller import bp_account as account_module
     app.register_blueprint(login_module)
     app.register_blueprint(register_module)
     app.register_blueprint(notes_module)
     app.register_blueprint(index_module)
+    app.register_blueprint(account_module)
 
 
 def register_login_manager_handlers():
@@ -74,31 +75,3 @@ def register_template_filters(app):
     def linkify(s):
         return bleach.linkify(s)
 
-
-def register_base_routes(app):
-    @app.route("/logout")
-    @login_required
-    def logout():
-        session.pop('rand_key')
-        logout_user()
-        Flasher.flash("You are successfully logged out!", "success")
-        return redirect(url_for("index"))
-
-    @app.route("/")
-    def index():
-        return render_template("index.html.j2")
-
-    @app.route("/dbc")
-    def createdb():
-        db.drop_all()
-        db.create_all()
-        user = User()
-        user.username = 'asd'
-        user.password = generate_password_hash('asd')
-        user.email = 'asd@gmail.com'
-        user.generate_encryption_keys('asd')
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        session['rand_key'] = user.get_random_key('asd')
-        return "OK"
