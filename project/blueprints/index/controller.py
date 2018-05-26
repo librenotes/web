@@ -59,7 +59,7 @@ def createdb():
     return "OK"
 
 
-# @cache.memoize(timeout=600)
+@cache.memoize(timeout=600)
 def get_commit_messages(count=10):
     g = Github(login_or_token=GITHUB_TOKEN)
     commits = g.get_organization('librenotes').get_repo('web').get_commits()
