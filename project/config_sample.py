@@ -1,6 +1,3 @@
-GITHUB_TOKEN = 'TOKEN'
-
-
 class Config(object):
     DEBUG = True
     SECRET_KEY = "KEY"

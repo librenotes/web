@@ -1,5 +1,5 @@
 import requests
-from flask import render_template, redirect, url_for, request, Blueprint, session, json
+from flask import render_template, redirect, url_for, request, Blueprint, session
 from project.models import User, ContactMessage
 from .forms import ContactForm
 from flask_login import login_user, login_required, logout_user
@@ -61,11 +61,10 @@ def createdb():
 @cache.memoize(timeout=900)
 def get_commit_messages(count=15):
     feed = []
-    content = requests.get("https://api.github.com/repos/librenotes/web/commits").content
-    content_json = json.loads(content)
+    content_json = requests.get("https://api.github.com/repos/librenotes/web/commits").json()
     for i in range(0, count):
         message = content_json[i]["commit"]["message"]
         author = content_json[i]["commit"]["committer"]["name"]
-        url = content_json[i]["commit"]["url"]
+        url = content_json[i]["html_url"]
         feed.append((author, message, url))
     return feed
