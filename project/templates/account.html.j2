@@ -3,21 +3,42 @@
 
 {% block styles %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
 {% block content %}
-
-    <form class="form-changepass" method="post" action="{{ url_for('app_account.change_pass_post') }}">
-        <h1 class="h3 mb-3 font-weight-normal text-center">Login</h1>
-        {{ messageflash.flash() }}
-        {{ form.csrf_token }}
-        <label for="inputCurrentPassword" class="sr-only">Password</label>
-        {{ form.password(class_="form-control", placeholder="password") }}
-        <label for="inputNewPassword" class="sr-only">New Password</label>
-        {{ form.new_password(class_="form-control", placeholder="password") }}
-        <label for="inputPassword" class="sr-only">Re New Password</label>
-        {{ form.re_new_password(class_="form-control", placeholder="password") }}
-        <button class="btn btn-lg btn-success btn-block" type="submit">Change Password</button>
-    </form>
+    <h1 class="h3 mb-3 font-weight-normal text-center" style="padding-top: 15px;">Account</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-signin" method="post" action="{{ url_for('app_account.change_pass_post') }}">
+                    {{ messageflash.flash() }}
+                    {{ form.csrf_token }}
+                    <h2 class="h3 mb-3 font-weight-normal text-center">Change Password</h2>
+                    <label for="inputCurrentPassword" class="sr-only">Old Password</label>
+                    {{ form.password(class_="form-control", placeholder="Old Password") }}
+                    <label for="inputNewPassword" class="sr-only">New Password</label>
+                    {{ form.new_password(class_="form-control", placeholder="New Password") }}
+                    <label for="inputPassword" class="sr-only">Re New Password</label>
+                    {{ form.re_new_password(class_="form-control", placeholder="Re New Password") }}
+                    <br>
+                    <button class="btn btn-lg btn-success btn-block" type="submit">Change Password</button>
+                    <br>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form class="form-signin" method="post" action="{{ url_for('app_account.change_description_post') }}">
+                    {{ messageflash.flash() }}
+                    {{ description_form.csrf_token }}
+                    <h2 class="h3 mb-3 font-weight-normal text-center">Change Your Description</h2>
+                    <p>This description is about how your public notes appear in search engines, default is: <span>See public notes of {{ current_user.username }}</span>
+                    </p>
+                    <label for="inputCurrentPassword" class="sr-only">Old Password</label>
+                    {{ description_form.description(class_="form-control", placeholder="Enter new description") }}
+                    <br>
+                    <button class="btn btn-lg btn-success btn-block" type="submit">Change Your Description</button>
+                    <br></br>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -13,7 +13,8 @@ def login_get():
         Flasher.flash("You are already logged in", "success")
         return redirect(url_for('app_notes.notes', username=current_user.username))
     else:
-        return render_template("login.html.j2", form=LoginForm())
+        return render_template("login.html.j2", form=LoginForm(), title="Librenotes | Login",
+                               description="Login to your account to see your private notes")
 
 
 @bp_login.route("/signin", methods=["POST"])

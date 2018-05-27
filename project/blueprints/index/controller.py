@@ -23,7 +23,8 @@ def logout():
 def index():
     form = ContactForm()
     github_feed = get_commit_messages()
-    return render_template("index.html.j2", form=form, github_feed=github_feed)
+    return render_template("index.html.j2", form=form, github_feed=github_feed, title="Librenotes | Welcome",
+                           description="We handle your notes and really don't give a F*!@ where you stayed yesterday night.")
 
 
 @bp_index.route("/contact", methods=["POST"])
@@ -51,6 +52,7 @@ def createdb():
     user.password = generate_password_hash('asd')
     user.email = 'asd@gmail.com'
     user.generate_encryption_keys('asd')
+    user.is_confirmed = True
     db.session.add(user)
     db.session.commit()
     login_user(user)

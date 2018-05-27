@@ -16,12 +16,19 @@ def notes(username):
     if current_user.is_authenticated and AuthHelper.check_username(current_user, username) \
             and AuthHelper.check_session_validation(current_user):
         note_list = NoteHelper.get_user_notes(current_user)
-        return render_template("notes.html.j2", notes=note_list, edit_form=NoteForm(), delete_form=DeleteNoteForm())
+        return render_template("notes.html.j2", notes=note_list, edit_form=NoteForm(), delete_form=DeleteNoteForm(),
+                               title="{} @ Librenotes".format(username),
+                               description="Welcome, {}".format(username))
     else:
-        note_list = NoteHelper.get_searched_user_notes(username)
-        if note_list:
+        note_list, searched_user = NoteHelper.get_searched_user_notes(username)
+        if searched_user:
             flash("You are seeing public notes of {}".format(username), "warning")
-            return render_template("notes.html.j2", notes=note_list, edit_form=None, delete_form=None)
+            description = "See public notes of {}".format(username)
+            if searched_user.description is not None:
+                description = searched_user.description
+            return render_template("notes.html.j2", notes=note_list, edit_form=None, delete_form=None,
+                                   title="{} @ Librenotes".format(username),
+                                   description=description)
         else:
             abort(404)
 
@@ -91,7 +98,6 @@ def delete_note():
         return redirect(url_for('app_notes.notes', username=current_user.username))
     else:
         return abort(404)
-
 
 # @bp_notes.route("/new_test", methods=['GET'])
 # @login_required
