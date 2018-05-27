@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash
 from re import split
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
+import requests
 
 
 class NoteHelper:
@@ -127,3 +128,35 @@ class Mailer:
         except:
             return False
         return email
+
+
+def fetch_github_pictures(url, path):
+    with requests.get(url) as resp:
+        with open(path, "wb") as f:
+            f.write(resp.content)
+
+
+class CommitFeedFetcher:
+    _FEED_KEY = "commit_feed"
+    _i = 0
+
+    def __init__(self, cache=None):
+        self.cache = cache
+
+    def init_cache(self, cache):
+        self.cache = cache
+
+    def update(self, count=15):
+        feed = []
+        content_json = requests.get("https://api.github.com/repos/librenotes/web/commits").json()
+        for i in range(0, count):
+            message = content_json[i]["commit"]["message"]
+            author = content_json[i]["commit"]["committer"]["name"]
+            url = content_json[i]["html_url"]
+            feed.append((author, message, url))
+        feed.append(self._i)
+        self._i += 1
+        self.cache.set(self._FEED_KEY, feed)
+
+    def get(self):
+        return self.cache.get(self._FEED_KEY)
