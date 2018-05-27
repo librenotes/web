@@ -5,7 +5,7 @@ from .forms import ContactForm
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash
 from project.helpers import Flasher
-from project import db, cache
+from project import db, feed_fetcher
 
 bp_index = Blueprint('app_index', __name__)
 
@@ -22,7 +22,7 @@ def logout():
 @bp_index.route("/", methods=["GET"])
 def index():
     form = ContactForm()
-    github_feed = get_commit_messages()
+    github_feed = feed_fetcher.get()
     return render_template("index.html.j2", form=form, github_feed=github_feed)
 
 
@@ -57,14 +57,3 @@ def createdb():
     session['rand_key'] = user.get_random_key('asd')
     return "OK"
 
-
-@cache.memoize(timeout=900)
-def get_commit_messages(count=15):
-    feed = []
-    content_json = requests.get("https://api.github.com/repos/librenotes/web/commits").json()
-    for i in range(0, count):
-        message = content_json[i]["commit"]["message"]
-        author = content_json[i]["commit"]["committer"]["name"]
-        url = content_json[i]["html_url"]
-        feed.append((author, message, url))
-    return feed

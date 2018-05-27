@@ -1,7 +1,8 @@
 from flask import Flask, redirect, url_for
+from flask_apscheduler import APScheduler
 from flask_login import LoginManager
 from flask_mail import Mail
-from .helpers import Mailer, Flasher
+from .helpers import Mailer, Flasher, fetch_github_pictures, CommitFeedFetcher
 from .models import User, db
 import bleach
 import markdown2
@@ -12,6 +13,7 @@ login_manager = LoginManager()
 mail = Mail()
 mailer = Mailer()
 cache = Cache()
+feed_fetcher = CommitFeedFetcher()
 
 
 def create_app(config):
@@ -24,6 +26,12 @@ def create_app(config):
     login_manager.init_app(app)
     mailer.init_app(app, mail)
     cache.init_app(app)
+    feed_fetcher.init_cache(cache)
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    setup_scheduled_jobs(scheduler=scheduler)
+    scheduler.start()
+    # setup and start scheduled jobs
     # Registers
     register_blueprints(app)
     register_error_handlers(app)
@@ -31,6 +39,27 @@ def create_app(config):
     register_template_filters(app)
     register_login_manager_handlers()
     return app
+
+
+def setup_scheduled_jobs(scheduler):
+    # setup github image fetchers that fetches up to date profile pictures of us to put on about us part
+    fetch_list = [('ozanonurtek', 'https://avatars3.githubusercontent.com/u/14114739?s=100&v=4'),
+                  ('vrct', 'https://avatars3.githubusercontent.com/u/16005747?s=100&v=4'),
+                  ('shubidubapp', 'https://avatars0.githubusercontent.com/u/16193640?s=100&v=4')]
+    i = 0
+    for i in range(len(fetch_list)):
+        name, url = fetch_list[i]
+        kwargs = dict(url=url,
+                      path="project/static/img/github_{}.jpeg".format(name))
+        fetch_github_pictures(**kwargs)
+        scheduler.add_job(id=str(i), name='{}_github'.format(name), func=fetch_github_pictures,
+                          kwargs=kwargs,
+                          trigger='interval', days=7)
+
+    # add the job that refreshes librenotes repos github commit history
+    i += 1
+    scheduler.add_job(id=str(i), name='feed_fetcher', func=feed_fetcher.update, trigger='interval', minutes=15)
+    feed_fetcher.update()
 
 
 def register_blueprints(app):
@@ -74,4 +103,3 @@ def register_template_filters(app):
     @app.template_filter('linkify')
     def linkify(s):
         return bleach.linkify(s)
-
