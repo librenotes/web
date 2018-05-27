@@ -154,8 +154,6 @@ class CommitFeedFetcher:
             author = content_json[i]["commit"]["committer"]["name"]
             url = content_json[i]["html_url"]
             feed.append((author, message, url))
-        feed.append(self._i)
-        self._i += 1
         self.cache.set(self._FEED_KEY, feed)
 
     def get(self):
