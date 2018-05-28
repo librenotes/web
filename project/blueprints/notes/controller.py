@@ -21,7 +21,7 @@ def notes(username):
                                description="Welcome, {}".format(username))
     else:
         note_list, searched_user = NoteHelper.get_searched_user_notes(username)
-        if searched_user:
+        if searched_user is not None:
             flash("You are seeing public notes of {}".format(username), "warning")
             description = "See public notes of {}".format(username)
             if searched_user.description is not None:

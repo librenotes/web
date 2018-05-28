@@ -28,7 +28,7 @@ class NoteHelper:
             return notes, searched_user
 
         else:
-            return None
+            return None, None
 
     @staticmethod
     def get_user_note_with_id(user_, id_):
