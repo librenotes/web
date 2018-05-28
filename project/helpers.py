@@ -26,7 +26,7 @@ class NoteHelper:
                     .order_by(Note.updated_on.desc()).all():
                 note_ = note.decrypt(AuthHelper.get_random_key())
                 notes.append(note_)
-            return notes
+            return notes, searched_user
 
         else:
             return None

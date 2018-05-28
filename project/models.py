@@ -30,6 +30,7 @@ class User(db.Model, UserMixin):
     categories = db.relationship('Category', secondary=category_user,
                                  lazy='joined', backref=db.backref('users', lazy='joined'))
     is_confirmed = db.Column(db.Boolean, default=False)
+    description = db.Column(db.Text, unique=False, nullable=True)
 
     def __init__(self): pass
 

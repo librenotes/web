@@ -51,6 +51,7 @@ def createdb():
     user.password = generate_password_hash('asd')
     user.email = 'asd@gmail.com'
     user.generate_encryption_keys('asd')
+    user.is_confirmed = True
     db.session.add(user)
     db.session.commit()
     login_user(user)

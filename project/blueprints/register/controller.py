@@ -15,7 +15,8 @@ def register_get():
         Flasher.flash("You are already logged in", "success")
         return redirect(url_for('app_notes.notes', username=current_user.username))
 
-    return render_template("register.html.j2", form=RegisterForm())
+    return render_template("register.html.j2", form=RegisterForm(), title="Librenotes | Register",
+                           description="Make your notes free, register now!")
 
 
 @bp_register.route("/signup", methods=["POST"])
