@@ -5,7 +5,12 @@ body {
 .delete-edit-button > li {
     display: inline-block;
     zoom: 1;
-    margin: 1px;
+	margin: 1px;
+}
+
+.delete-edit-button #deleteicon{
+	max-width: 70px;
+	max-height: 70px;
 }
 
 .notes {
@@ -49,11 +54,12 @@ body {
 
 .box-icon #lockicon{
     color: #fff;
+	max-width: 95px;
+	max-height: 95px;
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    margin-top: 20px;
-    margin-left: 35px;
+    margin-left: 20px;
 }
 
 .note-inner {

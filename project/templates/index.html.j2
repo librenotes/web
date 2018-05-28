@@ -84,8 +84,8 @@
         </div>
         <div class="row me-row content-ct icon">
             <div class="col-md-4 feature">
-                <img style="padding-left: 20px;" src="{{ url_for('static', filename='img/144-lock-index.png') }}"
-                     alt="lockimg">
+              <img style="padding-left: 20px; max-width: 64px; max-height: 64px;" src="{{ url_for('static', filename='img/indexlocked.svg') }}"
+                       alt="lockimg">
                 <h3>Secure</h3>
                 <p>We keep your note that much encrypted even we can't decrypt it. See how actually it works -link-</p>
             </div>
@@ -132,7 +132,7 @@
         <h2 class="row-title" style="color: #660033">Meet With The Team</h2>
         <div class="row me-row content-ct speaker" id="speakers">
             <div class="col-md-4 col-sm-6 feature ">
-                <img src="https://avatars3.githubusercontent.com/u/14114739?s=100&v=4" class="speaker-img">
+                <img src="https://avatars3.githubusercontent.com/u/14114739?s=400&v=4" class="speaker-img">
                 <h3 style="color: #660033">Ozan Onur TEK</h3>
                 <p>LoL</p>
                 <ul class="speaker-social">
@@ -141,7 +141,7 @@
                 </ul>
             </div>
             <div class="col-md-4 col-sm-6 feature">
-                <img src="https://avatars3.githubusercontent.com/u/16005747?s=100&v=4" class="speaker-img">
+                <img src="https://avatars3.githubusercontent.com/u/16005747?s=460&v=4" class="speaker-img">
                 <h3 style="color: #660033">Furkan ARICAN</h3>
                 <p>KeK</p>
                 <ul class="speaker-social">
@@ -152,7 +152,7 @@
                 </ul>
             </div>
             <div class="col-md-4 col-sm-6 feature">
-                <img src="https://avatars0.githubusercontent.com/u/16193640?s=100&v=4" class="speaker-img">
+                <img src="https://avatars0.githubusercontent.com/u/16193640?s=400&v=4" class="speaker-img">
                 <h3 style="color: #660033">Yigitcan OZKAN</h3>
                 <p>LuL</p>
                 <ul class="speaker-social">
@@ -172,11 +172,15 @@
             <h2 style="color: white; padding-top: 2em;" class="row-title">Donate</h2>
             <div class="row me-row content-ct">
                 <div class="col-md-4 col-sm-6 offset-md-2">
-                    <h3 style="color: white;">With Paypal</h3>
+                    <h3 style="color: white;">With <span><img style="height:30px; width:70px;"
+                                                              src="https://www.freepnglogos.com/uploads/paypal-logo-png-1.png"
+                                                              alt="paypal"></span></h3>
                     <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
                 </div>
                 <div class="col-md-4 col-sm-6">
-                    <h3 style="color: white;">With BTC</h3>
+                    <h3 style="color: white;">With <span><img style="height:32px; width:32px;"
+                                                              src="http://pngimg.com/uploads/bitcoin/bitcoin_PNG47.png"
+                                                              alt="bitcoin"></span></h3>
                     <a href="#" style="margin-bottom: 30px;" class="btn btn-lg btn-red">Donate</a>
                 </div>
             </div>
@@ -227,7 +231,7 @@
                 <ul>
 
                     {% for author, message, url in github_feed %}
-                        <li>{{ author}}: <a href="{{ url }}" target="_blank">{{ message }}</a></li>
+                        <li>{{ author.name }}: <a href="{{ url }}" target="_blank">{{ message }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
