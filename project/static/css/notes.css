@@ -5,7 +5,6 @@ body {
 .delete-edit-button > li {
     display: inline-block;
     zoom: 1;
-	margin: 1px;
 }
 
 .delete-edit-button #deleteicon{
@@ -13,6 +12,10 @@ body {
 	max-height: 70px;
 }
 
+.delete-edit-button #editicon{
+	max-width: 50px;
+	max-height: 50px;
+}
 .notes {
     margin: 0 auto;
 }
