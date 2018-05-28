@@ -60,7 +60,7 @@ def createdb():
     return "OK"
 
 
-@cache.memoize(timeout=900)
+@cache.memoize(timeout=1800)
 def get_commit_messages(count=15):
     feed = []
     content_json = requests.get("https://api.github.com/repos/librenotes/web/commits").json()
