@@ -1,3 +1,13 @@
+/*!
+ * useroperations.js
+ *
+ * Licensed GPLv3
+ *
+ * https://librenotes.org
+ *
+ */
+
+
 $('#editModal').on('show.bs.modal', function (event) {
 
     function unescapeHtml(safe) {

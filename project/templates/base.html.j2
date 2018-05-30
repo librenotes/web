@@ -6,10 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% block styles %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-              integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-              crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
     {% endblock %}
 </head>
 <body>
@@ -18,10 +16,16 @@
         <a class="navbar-brand" href="{{ url_for('app_index.index') }}">Librenotes</a>
 
         {% if current_user.is_authenticated %}
-            <form class="form-inline" style="text-align: center; display: block;">
-                <input class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search">
-            </form>
+            {% if request.path == "/notes/"+current_user.username %}
+                <form class="form-inline" style="text-align: center; display: block;">
+                    <input class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search">
+                </form>
+            {% endif %}
+
             <ul class="nav justify-content-center">
+                {% if request.path == "/" %}
+                    <a class="p-2 text-dark" href="{{ url_for('app_notes.notes', username=current_user.username) }}">My Notes</a>
+                {% endif %}
                 <a class="p-2 text-dark" href="{{ url_for('app_account.change_pass_get') }}">Account</a>
                 <a class="p-2 text-dark" href="{{ url_for('app_index.logout') }}">Logout</a>
             </ul>
@@ -50,12 +54,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 {% endblock %}
 
 </body>

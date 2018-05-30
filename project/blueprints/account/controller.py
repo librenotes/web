@@ -25,7 +25,7 @@ def change_pass_post():
                           category='warning')
             return redirect(url_for("app_notes.notes", username=current_user.username))
     else:
-        Flasher.flash_errors(form)
+        Flasher.flash_errors(form, "danger")
         return redirect(url_for("app_notes.notes", username=current_user.username))
 
 
@@ -48,5 +48,5 @@ def change_description_post():
             Flasher.flash("Are you fake?",
                           category='warning')
     else:
-        Flasher.flash_errors(form)
+        Flasher.flash_errors(form, "danger")
     return redirect(url_for("app_notes.notes", username=current_user.username))
