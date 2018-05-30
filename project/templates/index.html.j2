@@ -6,61 +6,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
-<!-- <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Meetup is a free responsive single page bootstrap template by designerdada.com">
-  <meta name="author" content="Akash Bhadange">
-  <title>LIBRENOTES</title>
-
-
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/index_new.css" rel="stylesheet">
-
-  <link href='css/dosis-font.css' rel='stylesheet' type='text/css'>
-</head> -->
-
 {% block content %}
-    {#  <nav class="side-menu">#}
-    {#    <ul>#}
-    {#        <li class="hidden">#}
-    {#            <a class="page-scroll" href="#page-top"></a>#}
-    {#        </li>#}
-    {#        <li>#}
-    {#            <a href="#home" class="page-scroll">#}
-    {#                <span class="menu-title">Home</span>#}
-    {#                <span class="dot"></span>#}
-    {#            </a>#}
-    {#        </li>#}
-    {#        <li>#}
-    {#            <a href="#speakers" class="page-scroll">#}
-    {#                <span class="menu-title">Speakers</span>#}
-    {#                <span class="dot"></span>#}
-    {#            </a>#}
-    {#        </li>#}
-    {#        <li>#}
-    {#            <a href="#tickets" class="page-scroll">#}
-    {#                <span class="menu-title">Buy Tickets</span>#}
-    {#                <span class="dot"></span>#}
-    {#            </a>#}
-    {#        </li>#}
-    {#        <li>#}
-    {#            <a href="#schedule" class="page-scroll">#}
-    {#                <span class="menu-title">Schedule</span>#}
-    {#                <span class="dot"></span>#}
-    {#            </a>#}
-    {#        </li>#}
-    {#    </ul>#}
-    {#</nav>#}
     <div class="container-fluid">
         {{ messageflash.flash() }}
         <!-- Start: Header -->
         <div class="row hero-header" id="home">
             <div class="col-md-7 col-xs-12">
-                <!-- <img src="static/img/meetup-logo.png" class="logo"> -->
                 <h1 style="font-size: 55px; color: yellow;">Librenotes</h1>
-                {#            <h2 style="color: white;">We respect your <span style="font-size: 50px; color: #6699ff;">PRIVACY!</span></h2>#}
                 <h3 style="color: white;">We handle your notes and really don't give a <span
                         style="font-size: 47px; color: #6699ff ;">F*!@</span>
                     where you stayed yesterday night.</h3>
@@ -70,7 +22,7 @@
                 <img style="padding-left: 25%; padding-top: 10%"
                      src="{{ url_for('static', filename='img/pencil.png') }}" alt="pencil-foreground"
                      class="animated bounce">
-                <!-- <img src="static/img/animated.png" class="rocket animated bounce"> -->
+
             </div>
         </div>
         <!-- End: Header -->
@@ -84,8 +36,9 @@
         </div>
         <div class="row me-row content-ct icon">
             <div class="col-md-4 feature">
-              <img style="padding-left: 20px; max-width: 64px; max-height: 64px;" src="{{ url_for('static', filename='img/indexlocked.svg') }}"
-                       alt="lockimg">
+                <img style="padding-left: 20px; max-width: 64px; max-height: 64px;"
+                     src="{{ url_for('static', filename='img/indexlocked.svg') }}"
+                     alt="lockimg">
                 <h3>Secure</h3>
                 <p>We keep your note that much encrypted even we can't decrypt it. See how actually it works -link-</p>
             </div>
@@ -112,10 +65,12 @@
             <div class="col text-center">
                 <h2 class="row-title">Donation Bar</h2>
                 <div class="feature">
-                <div class="progress position-relative">
+                    <div class="progress position-relative">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%; background-color:#660033">
-                            <div class="justify-content-center d-flex position-absolute w-100" style="color: yellow; font-size: 16px; font-weight: bold;">
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                             style="width:75%; background-color:#660033">
+                            <div class="justify-content-center d-flex position-absolute w-100"
+                                 style="color: yellow; font-size: 16px; font-weight: bold;">
                                 75%
                             </div>
                         </div>
